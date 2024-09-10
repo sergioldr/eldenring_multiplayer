@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using SG;
+using SL;
 
 public class TitleScreenMenuUI : MonoBehaviour
 {
