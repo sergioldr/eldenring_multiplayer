@@ -20,5 +20,24 @@ namespace SL
 
             playerLocomotionManager.HandleAllMovement();
         }
+
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+
+            if (!IsOwner) return;
+
+            PlayerCamera.Instance.HandleAllCameraActions();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            if (IsOwner)
+            {
+                PlayerCamera.Instance.SetPlayerManager(this);
+            }
+        }
     }
 }

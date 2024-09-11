@@ -45,6 +45,11 @@ namespace SL
             }
         }
 
+        protected virtual void LateUpdate()
+        {
+
+        }
+
     }
 }
 

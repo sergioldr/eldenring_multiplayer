@@ -11,10 +11,16 @@ namespace SL
         public static PlayerInputManager Instance { get; private set; }
         PlayerControls playerControls;
 
+        [Header("Player Movement Inputs")]
         [SerializeField] Vector2 movementInput;
-        [SerializeField] float verticalInput;
-        [SerializeField] float horizontalInput;
-        [SerializeField] float moveAmount;
+        [SerializeField] float playerVerticalInput;
+        [SerializeField] float playerHorizontalInput;
+        [SerializeField] float playerMoveAmount;
+
+        [Header("Camera Movement Inputs")]
+        [SerializeField] Vector2 cameraInput;
+        [SerializeField] float cameraVerticalInput;
+        [SerializeField] float cameraHorizontalInput;
 
         private void Awake()
         {
@@ -39,7 +45,8 @@ namespace SL
 
         private void Update()
         {
-            HandleMovementInput();
+            HandlePlayerMovementInput();
+            HandleCameraMovemtInput();
         }
 
         private void SceneManager_OnSceneChanged(Scene oldScene, Scene newScene)
@@ -60,6 +67,7 @@ namespace SL
             {
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+                playerControls.PlayerCamera.Movement.performed += ctx => cameraInput = ctx.ReadValue<Vector2>();
             }
 
             playerControls.Enable();
@@ -70,21 +78,29 @@ namespace SL
             SceneManager.activeSceneChanged -= SceneManager_OnSceneChanged;
         }
 
-        private void HandleMovementInput()
+        private void HandlePlayerMovementInput()
         {
-            verticalInput = movementInput.y;
-            horizontalInput = movementInput.x;
+            playerVerticalInput = movementInput.y;
+            playerHorizontalInput = movementInput.x;
 
-            moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
+            playerMoveAmount = Mathf.Clamp01(Mathf.Abs(playerHorizontalInput) + Mathf.Abs(playerVerticalInput));
 
-            if (moveAmount <= 0.5 && moveAmount > 0)
+            if (playerMoveAmount <= 0.5 && playerMoveAmount > 0)
             {
-                moveAmount = 0.5f;
+                playerMoveAmount = 0.5f;
             }
-            else if (moveAmount > 0.5 && moveAmount <= 1)
+            else if (playerMoveAmount > 0.5 && playerMoveAmount <= 1)
             {
-                moveAmount = 1;
+                playerMoveAmount = 1;
             }
+        }
+
+        private void HandleCameraMovemtInput()
+        {
+            cameraVerticalInput = cameraInput.y;
+            cameraHorizontalInput = cameraInput.x;
+            Debug.Log(cameraVerticalInput);
+            Debug.Log(cameraHorizontalInput);
         }
 
         private void OnApplicationFocus(bool focus)
@@ -104,17 +120,27 @@ namespace SL
 
         public float GetMoveAmount()
         {
-            return moveAmount;
+            return playerMoveAmount;
         }
 
         public float GetVerticalMovement()
         {
-            return verticalInput;
+            return playerVerticalInput;
         }
 
         public float GetHorizontalMovement()
         {
-            return horizontalInput;
+            return playerHorizontalInput;
+        }
+
+        public float GetCameraVerticalInput()
+        {
+            return cameraVerticalInput;
+        }
+
+        public float GetCameraHorizontalInput()
+        {
+            return cameraHorizontalInput;
         }
     }
 }
