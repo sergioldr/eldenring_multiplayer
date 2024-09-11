@@ -7,9 +7,9 @@ namespace SL
 {
     public class CharacterManager : NetworkBehaviour
     {
-        public CharacterController characterController;
-
+        private CharacterController characterController;
         private CharacterNetworkManager characterNetworkManager;
+        private Animator animator;
 
         protected virtual void Awake()
         {
@@ -17,6 +17,7 @@ namespace SL
 
             characterController = GetComponent<CharacterController>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
+            animator = GetComponent<Animator>();
         }
 
         protected virtual void Update()
@@ -48,6 +49,21 @@ namespace SL
         protected virtual void LateUpdate()
         {
 
+        }
+
+        public CharacterNetworkManager GetCharacterNetworkManager()
+        {
+            return characterNetworkManager;
+        }
+
+        public CharacterController GetCharacterController()
+        {
+            return characterController;
+        }
+
+        public Animator GetCharacterAnimator()
+        {
+            return animator;
         }
 
     }

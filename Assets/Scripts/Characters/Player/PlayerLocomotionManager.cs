@@ -22,6 +22,28 @@ namespace SL
             playerManager = GetComponent<PlayerManager>();
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            CharacterNetworkManager characterNetworkManager = playerManager.GetCharacterNetworkManager();
+            PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
+
+            if (playerManager.IsOwner)
+            {
+                characterNetworkManager.networkVerticalMovement.Value = verticalMovement;
+                characterNetworkManager.networkHorizontalMovement.Value = horizontalMovement;
+                characterNetworkManager.networkAmountMovement.Value = moveAmount;
+            }
+            else
+            {
+                verticalMovement = characterNetworkManager.networkVerticalMovement.Value;
+                horizontalMovement = characterNetworkManager.networkHorizontalMovement.Value;
+                moveAmount = characterNetworkManager.networkAmountMovement.Value;
+
+                playerAnimationManager.UpdateAnimatorMovementParameters(horizontalMovement, verticalMovement);
+            }
+        }
 
         public void HandleAllMovement()
         {
@@ -29,15 +51,16 @@ namespace SL
             HandleRotation();
         }
 
-        private void GetVerticalAndHorizontalInput()
+        private void GetMovementValues()
         {
             verticalMovement = PlayerInputManager.Instance.GetVerticalMovement();
             horizontalMovement = PlayerInputManager.Instance.GetHorizontalMovement();
+            moveAmount = PlayerInputManager.Instance.GetMoveAmount();
         }
 
         private void HandleGroundedMovement()
         {
-            GetVerticalAndHorizontalInput();
+            GetMovementValues();
 
             moveDirection = PlayerCamera.Instance.transform.forward * verticalMovement;
             moveDirection = moveDirection + PlayerCamera.Instance.transform.right * horizontalMovement;
@@ -45,14 +68,15 @@ namespace SL
             moveDirection.y = 0;
 
             float movementAmount = PlayerInputManager.Instance.GetMoveAmount();
+            CharacterController characterController = playerManager.GetCharacterController();
 
             if (movementAmount > 0.5f)
             {
-                playerManager.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+                characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
             }
             else if (movementAmount <= 0.5f)
             {
-                playerManager.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+                characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
             }
         }
 

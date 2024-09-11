@@ -8,6 +8,11 @@ namespace SL
         {
 
         }
+
+        protected virtual void Update()
+        {
+
+        }
     }
 }
 

@@ -9,7 +9,8 @@ namespace SL
     public class PlayerInputManager : MonoBehaviour
     {
         public static PlayerInputManager Instance { get; private set; }
-        PlayerControls playerControls;
+        private PlayerControls playerControls;
+        private PlayerManager playerManager;
 
         [Header("Player Movement Inputs")]
         [SerializeField] Vector2 movementInput;
@@ -93,14 +94,15 @@ namespace SL
             {
                 playerMoveAmount = 1;
             }
+
+            PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
+            playerAnimationManager.UpdateAnimatorMovementParameters(0, playerMoveAmount);
         }
 
         private void HandleCameraMovemtInput()
         {
             cameraVerticalInput = cameraInput.y;
             cameraHorizontalInput = cameraInput.x;
-            Debug.Log(cameraVerticalInput);
-            Debug.Log(cameraHorizontalInput);
         }
 
         private void OnApplicationFocus(bool focus)
@@ -141,6 +143,11 @@ namespace SL
         public float GetCameraHorizontalInput()
         {
             return cameraHorizontalInput;
+        }
+
+        public void SetPlayerManager(PlayerManager playerManager)
+        {
+            this.playerManager = playerManager;
         }
     }
 }
