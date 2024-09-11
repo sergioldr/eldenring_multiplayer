@@ -83,6 +83,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5128420099530695392}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7667813984281888133}
   m_SourcePrefab: {fileID: 100100000, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
 --- !u!1 &6039314550701551483 stripped
 GameObject:
@@ -101,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1273860950
+  GlobalObjectIdHash: 2326270496
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -284,7 +287,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 2.5
   runningSpeed: 5
+  sprintingSpeed: 10
   rotationSpeed: 15
+  sprintingStaminaCost: 2
 --- !u!114 &-5347180570828623300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +315,14 @@ MonoBehaviour:
     m_InternalValue: 0
   networkAmountMovement:
     m_InternalValue: 0
+  isSprinting:
+    m_InternalValue: 0
+  networkEndurance:
+    m_InternalValue: 10
+  networkCurrentStamina:
+    m_InternalValue: 0
+  networkMaxStamina:
+    m_InternalValue: 0
 --- !u!114 &-1927534933972728501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,5 +345,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 923ee9aead395c744a15da773d7a4825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7667813984281888133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6039314550701551483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 886b4077d4e8df24dbb061b6c03a7e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

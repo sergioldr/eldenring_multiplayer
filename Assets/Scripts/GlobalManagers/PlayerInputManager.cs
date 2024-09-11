@@ -129,7 +129,9 @@ namespace SL
             }
 
             PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
-            playerAnimationManager.UpdateAnimatorMovementParameters(0, playerMoveAmount);
+            bool isSprinting = playerManager.GetPlayerNetworkManager().isSprinting.Value;
+
+            playerAnimationManager.UpdateAnimatorMovementParameters(0, playerMoveAmount, isSprinting);
         }
 
         private void HandleCameraMovemtInput()
@@ -152,6 +154,10 @@ namespace SL
             if (isSprintInputActive)
             {
                 playerManager.GetPlayerLocomotionManager().HandleSprinting();
+            }
+            else
+            {
+                playerManager.GetPlayerNetworkManager().isSprinting.Value = false;
             }
         }
 
@@ -183,6 +189,16 @@ namespace SL
         public void SetPlayerManager(PlayerManager playerManager)
         {
             this.playerManager = playerManager;
+        }
+
+        public bool GetIsSprintInputActive()
+        {
+            return isSprintInputActive;
+        }
+
+        public void SetIsSprintInputActive(bool isSprintInputActive)
+        {
+            this.isSprintInputActive = isSprintInputActive;
         }
     }
 }

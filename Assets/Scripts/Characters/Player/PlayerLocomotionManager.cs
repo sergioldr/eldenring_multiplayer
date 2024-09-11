@@ -15,10 +15,13 @@ namespace SL
         private Vector3 targetRotationDirection;
         [SerializeField] private float walkingSpeed = 2.5f;
         [SerializeField] private float runningSpeed = 5f;
+        [SerializeField] private float sprintingSpeed = 7f;
         [SerializeField] private float rotationSpeed = 15f;
+        [SerializeField] private float sprintingStaminaCost = 2f;
 
         [Header("Dodge Settings")]
         private Vector3 rollDirection;
+        [SerializeField] private float dodgeStaminaCost = 25f;
 
         protected override void Awake()
         {
@@ -45,7 +48,9 @@ namespace SL
                 horizontalMovement = characterNetworkManager.networkHorizontalMovement.Value;
                 moveAmount = characterNetworkManager.networkAmountMovement.Value;
 
-                playerAnimationManager.UpdateAnimatorMovementParameters(horizontalMovement, verticalMovement);
+                bool isSprinting = characterNetworkManager.isSprinting.Value;
+
+                playerAnimationManager.UpdateAnimatorMovementParameters(horizontalMovement, verticalMovement, isSprinting);
             }
         }
 
@@ -76,14 +81,23 @@ namespace SL
             float movementAmount = PlayerInputManager.Instance.GetMovementAmount();
             CharacterController characterController = playerManager.GetCharacterController();
 
-            if (movementAmount > 0.5f)
+            if (playerManager.GetPlayerNetworkManager().isSprinting.Value)
             {
-                characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+                characterController.Move(moveDirection * sprintingSpeed * Time.deltaTime);
             }
-            else if (movementAmount <= 0.5f)
+            else
             {
-                characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+                if (movementAmount > 0.5f)
+                {
+                    characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
+                }
+                else if (movementAmount <= 0.5f)
+                {
+                    characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
+                }
             }
+
+
         }
 
         private void HandleRotation()
@@ -110,8 +124,11 @@ namespace SL
         public void AttemptToDodge()
         {
             bool isPerformingAction = playerManager.GetIsPerformingAction();
-
             if (isPerformingAction) return;
+
+            PlayerNetworkManager playerNetworkManager = playerManager.GetPlayerNetworkManager();
+
+            if (playerNetworkManager.networkCurrentStamina.Value <= 0) return;
 
             PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
             // If we are moving when we press the dodge button we perfrom a roll
@@ -134,11 +151,38 @@ namespace SL
                 // If we are not moving when we press the dodge button we perform a backstep
                 playerAnimationManager.PlayTargetActionAnimation("Back_Step_01", true);
             }
+
+            playerNetworkManager.networkCurrentStamina.Value -= dodgeStaminaCost;
         }
 
         public void HandleSprinting()
         {
+            PlayerNetworkManager playerNetworkManager = playerManager.GetPlayerNetworkManager();
 
+            if (playerManager.GetIsPerformingAction())
+            {
+                playerNetworkManager.isSprinting.Value = false;
+            }
+
+            if (playerNetworkManager.networkCurrentStamina.Value <= 0)
+            {
+                playerNetworkManager.isSprinting.Value = false;
+                return;
+            }
+
+            if (moveAmount >= 0.5f)
+            {
+                playerNetworkManager.isSprinting.Value = true;
+            }
+            else
+            {
+                playerNetworkManager.isSprinting.Value = false;
+            }
+
+            if (playerNetworkManager.isSprinting.Value)
+            {
+                playerNetworkManager.networkCurrentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
+            }
         }
     }
 }

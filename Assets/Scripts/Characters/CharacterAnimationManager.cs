@@ -7,18 +7,31 @@ namespace SL
     {
         CharacterManager characterManager;
 
-        private float horizontalValue;
-        private float verticalValue;
+        private int horizontal;
+        private int vertical;
 
         protected virtual void Awake()
         {
             characterManager = GetComponent<CharacterManager>();
+
+            vertical = Animator.StringToHash("Vertical");
+            horizontal = Animator.StringToHash("Horizontal");
         }
-        public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue)
+
+        public void UpdateAnimatorMovementParameters(float horizontalValue, float verticalValue, bool isSprinting)
         {
             Animator characterAnimator = characterManager.GetCharacterAnimator();
-            characterAnimator.SetFloat("Horizontal", horizontalValue, 0.1f, Time.deltaTime);
-            characterAnimator.SetFloat("Vertical", verticalValue, 0.1f, Time.deltaTime);
+
+            float horizontalAmount = horizontalValue;
+            float verticalAmount = verticalValue;
+
+            if (isSprinting)
+            {
+                verticalAmount = 2;
+            }
+
+            characterAnimator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
+            characterAnimator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
         }
 
         public virtual void PlayTargetActionAnimation(

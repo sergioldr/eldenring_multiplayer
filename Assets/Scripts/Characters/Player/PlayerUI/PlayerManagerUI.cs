@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace SL
 {
-    public class PlayerManagerUI : MonoBehaviour
+    public class PlayerUIManager : MonoBehaviour
     {
-        public static PlayerManagerUI Instance { get; private set; }
+        public static PlayerUIManager Instance { get; private set; }
 
         [Header("NETWORK JOIN")]
         [SerializeField] bool startGameAsClient;
+
+        private PlayerUIHUDManager playerUIHUDManager;
 
         private void Awake()
         {
@@ -22,6 +24,8 @@ namespace SL
             {
                 Destroy(gameObject);
             }
+
+            playerUIHUDManager = GetComponentInChildren<PlayerUIHUDManager>();
         }
 
         private void Start()
@@ -39,6 +43,11 @@ namespace SL
                 // Here we start as a client
                 NetworkManager.Singleton.StartClient();
             }
+        }
+
+        public PlayerUIHUDManager GetPlayerUIHUDManager()
+        {
+            return playerUIHUDManager;
         }
     }
 }
