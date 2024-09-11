@@ -7,9 +7,15 @@ namespace SL
 {
     public class CharacterManager : NetworkBehaviour
     {
+        private Animator animator;
         private CharacterController characterController;
         private CharacterNetworkManager characterNetworkManager;
-        private Animator animator;
+
+        [Header("Character Flags")]
+        [SerializeField] private bool isPerformingAction = false;
+        [SerializeField] private bool applyRootMotion = false;
+        [SerializeField] private bool canRotate = true;
+        [SerializeField] private bool canMove = true;
 
         protected virtual void Awake()
         {
@@ -64,6 +70,46 @@ namespace SL
         public Animator GetCharacterAnimator()
         {
             return animator;
+        }
+
+        public bool GetApplyRootMotion()
+        {
+            return applyRootMotion;
+        }
+
+        public void SetApplyRootMotion(bool value)
+        {
+            applyRootMotion = value;
+        }
+
+        public bool GetIsPerformingAction()
+        {
+            return isPerformingAction;
+        }
+
+        public void SetIsPerformingAction(bool value)
+        {
+            isPerformingAction = value;
+        }
+
+        public bool GetCanRotate()
+        {
+            return canRotate;
+        }
+
+        public void SetCanRotate(bool value)
+        {
+            canRotate = value;
+        }
+
+        public bool GetCanMove()
+        {
+            return canMove;
+        }
+
+        public void SetCanMove(bool value)
+        {
+            canMove = value;
         }
 
     }

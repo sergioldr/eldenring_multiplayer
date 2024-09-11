@@ -12,16 +12,22 @@ namespace SL
         private PlayerControls playerControls;
         private PlayerManager playerManager;
 
-        [Header("Player Movement Inputs")]
-        [SerializeField] Vector2 movementInput;
-        [SerializeField] float playerVerticalInput;
-        [SerializeField] float playerHorizontalInput;
-        [SerializeField] float playerMoveAmount;
-
         [Header("Camera Movement Inputs")]
-        [SerializeField] Vector2 cameraInput;
-        [SerializeField] float cameraVerticalInput;
-        [SerializeField] float cameraHorizontalInput;
+        [SerializeField] private Vector2 cameraInput;
+        [SerializeField] private float cameraVerticalInput;
+        [SerializeField] private float cameraHorizontalInput;
+
+        [Header("Player Movement Inputs")]
+        [SerializeField] private Vector2 movementInput;
+        [SerializeField] private float playerVerticalInput;
+        [SerializeField] private float playerHorizontalInput;
+        [SerializeField] private float playerMoveAmount;
+
+        [Header("Player Action Inputs")]
+        [SerializeField] private bool isDodgeInputActive = false;
+        [SerializeField] private bool isSprintInputActive = false;
+
+
 
         private void Awake()
         {
@@ -46,8 +52,7 @@ namespace SL
 
         private void Update()
         {
-            HandlePlayerMovementInput();
-            HandleCameraMovemtInput();
+            HandleAllInputs();
         }
 
         private void SceneManager_OnSceneChanged(Scene oldScene, Scene newScene)
@@ -69,14 +74,42 @@ namespace SL
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += ctx => cameraInput = ctx.ReadValue<Vector2>();
+                playerControls.PlayerActions.Dodge.performed += ctx => isDodgeInputActive = true;
+
+                // HERE WE HOLD THE SPRINT BUTTON
+                playerControls.PlayerActions.Sprint.performed += ctx => isSprintInputActive = true;
+                playerControls.PlayerActions.Sprint.canceled += ctx => isSprintInputActive = false;
             }
 
             playerControls.Enable();
         }
 
+        private void OnApplicationFocus(bool focus)
+        {
+            if (enabled)
+            {
+                if (focus)
+                {
+                    playerControls.Enable();
+                }
+                else
+                {
+                    playerControls.Disable();
+                }
+            }
+        }
+
         private void OnDestroy()
         {
             SceneManager.activeSceneChanged -= SceneManager_OnSceneChanged;
+        }
+
+        private void HandleAllInputs()
+        {
+            HandlePlayerMovementInput();
+            HandleCameraMovemtInput();
+            HandleDodgeInput();
+            HandleSprintInput();
         }
 
         private void HandlePlayerMovementInput()
@@ -105,22 +138,24 @@ namespace SL
             cameraHorizontalInput = cameraInput.x;
         }
 
-        private void OnApplicationFocus(bool focus)
+        private void HandleDodgeInput()
         {
-            if (enabled)
+            if (isDodgeInputActive)
             {
-                if (focus)
-                {
-                    playerControls.Enable();
-                }
-                else
-                {
-                    playerControls.Disable();
-                }
+                isDodgeInputActive = false;
+                playerManager.GetPlayerLocomotionManager().AttemptToDodge();
             }
         }
 
-        public float GetMoveAmount()
+        private void HandleSprintInput()
+        {
+            if (isSprintInputActive)
+            {
+                playerManager.GetPlayerLocomotionManager().HandleSprinting();
+            }
+        }
+
+        public float GetMovementAmount()
         {
             return playerMoveAmount;
         }
