@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace SL
 {
-    [CreateAssetMenu(menuName = "Character/Effects/Take Stamina Damage")]
-    public class TakeStaminaDamageCharacterEffect : InstantCharacterEffect
+    [CreateAssetMenu(menuName = "Character/Effects/Take Stamina")]
+    public class TakeStaminaEffect : InstantCharacterEffect
     {
         [SerializeField] private float staminaDamageAmount = 10;
 

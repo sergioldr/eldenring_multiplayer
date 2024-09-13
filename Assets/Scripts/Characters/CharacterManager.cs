@@ -7,9 +7,13 @@ namespace SL
 {
     public class CharacterManager : NetworkBehaviour
     {
+        [Header("Status")]
+        private NetworkVariable<bool> isDead = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         private Animator animator;
         private CharacterController characterController;
         private CharacterNetworkManager characterNetworkManager;
+        private CharacterEffectsManager characterEffectsManager;
 
         [Header("Character Flags")]
         [SerializeField] private bool isPerformingAction = false;
@@ -23,9 +27,10 @@ namespace SL
         {
             DontDestroyOnLoad(this);
 
+            animator = GetComponent<Animator>();
             characterController = GetComponent<CharacterController>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
-            animator = GetComponent<Animator>();
+            characterEffectsManager = GetComponent<CharacterEffectsManager>();
         }
 
         protected virtual void Update()
@@ -61,9 +66,11 @@ namespace SL
 
         }
 
-
-
         // Getters and Setters
+        public Animator GetCharacterAnimator()
+        {
+            return animator;
+        }
 
         public CharacterNetworkManager GetCharacterNetworkManager()
         {
@@ -75,9 +82,9 @@ namespace SL
             return characterController;
         }
 
-        public Animator GetCharacterAnimator()
+        public CharacterEffectsManager GetCharacterEffectsManager()
         {
-            return animator;
+            return characterEffectsManager;
         }
 
         public bool GetApplyRootMotion()
@@ -140,6 +147,15 @@ namespace SL
             isGrounded = value;
         }
 
+        public bool GetIsDead()
+        {
+            return isDead.Value;
+        }
+
+        public void SetIsDead(bool value)
+        {
+            isDead.Value = value;
+        }
     }
 }
 

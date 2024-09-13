@@ -7,7 +7,10 @@ namespace SL
     {
         public static WorldCharacterEffectsManager Instance { get; private set; }
 
-        private List<InstantCharacterEffect> instantCharacterEffects = new List<InstantCharacterEffect>();
+        [Header("Damage")]
+        [SerializeField] private TakeDamageEffect takeDamageEffect;
+
+        [SerializeField] private List<InstantCharacterEffect> instantCharacterEffects = new List<InstantCharacterEffect>();
 
         private void Awake()
         {
@@ -29,6 +32,11 @@ namespace SL
             {
                 instantCharacterEffects[i].instantEffectID = i;
             }
+        }
+
+        public TakeDamageEffect GetTakeDamageEffect()
+        {
+            return takeDamageEffect;
         }
     }
 }

@@ -94,6 +94,9 @@ namespace SL
             currentCharacterData.characterSlot = currentCharacterSlot;
             characterSavedDataList.Add(currentCharacterData);
 
+            playerManager.GetPlayerNetworkManager().networkVitality.Value = 15;
+            playerManager.GetPlayerNetworkManager().networkEndurance.Value = 10;
+
             SaveGame();
 
             StartCoroutine(LoadWorldScene());
