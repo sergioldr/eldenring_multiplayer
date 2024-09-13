@@ -51,12 +51,14 @@ namespace SL
 
                 PlayerUIHUDManager playerUIHUDManager = PlayerUIManager.Instance.GetPlayerUIHUDManager();
 
+                // THIS UPDATES THE TOTAL AMOUNT OF HEALTH OR STAMINA WHEN THE STAT LINKED TO EITHER CHANGES (VITALITY, ENDURANCE)
+                playerNetworkManager.networkVitality.OnValueChanged += playerNetworkManager.SetNewMaxHealthValue;
+                playerNetworkManager.networkEndurance.OnValueChanged += playerNetworkManager.SetNewMaxStaminaValue;
+
+                // THIS UPDATES UI STATS BARS WHEN A STAT CHANGES (HEALTH, STAMINA)
+                playerNetworkManager.networkCurrentHealth.OnValueChanged += playerUIHUDManager.SetNewHealthValue;
                 playerNetworkManager.networkCurrentStamina.OnValueChanged += playerUIHUDManager.SetNewStaminaValue;
                 playerNetworkManager.networkCurrentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenerationTimer;
-
-                playerNetworkManager.networkMaxStamina.Value = playerStatsManager.CalculateBaseStaminaBasedOnEnduranceLevel(playerNetworkManager.networkEndurance.Value);
-                playerNetworkManager.networkCurrentStamina.Value = playerStatsManager.CalculateBaseStaminaBasedOnEnduranceLevel(playerNetworkManager.networkEndurance.Value);
-                playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.networkMaxStamina.Value);
             }
         }
 
@@ -67,6 +69,12 @@ namespace SL
             currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.yPosition = transform.position.y;
             currentCharacterData.zPosition = transform.position.z;
+
+            currentCharacterData.currentHealth = playerNetworkManager.networkCurrentHealth.Value;
+            currentCharacterData.currentStamina = playerNetworkManager.networkCurrentStamina.Value;
+
+            currentCharacterData.vitality = playerNetworkManager.networkVitality.Value;
+            currentCharacterData.endurance = playerNetworkManager.networkEndurance.Value;
         }
 
         public void LoadCurrentCharacterData(ref CharacterSaveData currentCharacterData)
@@ -78,6 +86,18 @@ namespace SL
                 currentCharacterData.zPosition
             );
             transform.position = myPosition;
+
+            // Set the player's vitality and endurance based on the character's data
+            playerNetworkManager.networkVitality.Value = currentCharacterData.vitality;
+            playerNetworkManager.networkEndurance.Value = currentCharacterData.endurance;
+
+            // Set the player's health and stamina based on the character's vitality and endurance
+            PlayerUIHUDManager playerUIHUDManager = PlayerUIManager.Instance.GetPlayerUIHUDManager();
+            playerNetworkManager.networkMaxHealth.Value = playerStatsManager.CalculateBaseHealthBasedOnVitalityLevel(playerNetworkManager.networkVitality.Value);
+            playerNetworkManager.networkMaxStamina.Value = playerStatsManager.CalculateBaseStaminaBasedOnEnduranceLevel(playerNetworkManager.networkEndurance.Value);
+            playerNetworkManager.networkCurrentHealth.Value = currentCharacterData.currentHealth;
+            playerNetworkManager.networkCurrentStamina.Value = currentCharacterData.currentStamina;
+            playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.networkMaxStamina.Value);
         }
 
         public PlayerAnimationManager GetPlayerAnimationManager()
@@ -93,6 +113,11 @@ namespace SL
         public PlayerNetworkManager GetPlayerNetworkManager()
         {
             return playerNetworkManager;
+        }
+
+        public PlayerStatsManager GetPlayerStatsManager()
+        {
+            return playerStatsManager;
         }
     }
 }

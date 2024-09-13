@@ -73,15 +73,12 @@ namespace SL
 
         public void CreateNewGame()
         {
-
             // here we check if all slots are full
             if (characterSavedDataList.All(item => item != null))
             {
                 TitleScreenMenuUI.Instance.DisplayNoAvailableSlotsPopUp();
                 return;
             }
-
-
             // here we find the next available slot
             for (int i = 0; i < allSlots.Length; i++)
             {
@@ -92,11 +89,12 @@ namespace SL
                 }
             }
 
-
             // this is the next available slot
             currentCharacterData = new CharacterSaveData();
             currentCharacterData.characterSlot = currentCharacterSlot;
             characterSavedDataList.Add(currentCharacterData);
+
+            SaveGame();
 
             StartCoroutine(LoadWorldScene());
         }

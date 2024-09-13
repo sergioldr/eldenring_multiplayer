@@ -21,6 +21,16 @@ namespace SL
         public float xPosition;
         public float yPosition;
         public float zPosition;
+
+        [Header("Character Stats")]
+        public int vitality;
+        public int endurance;
+
+        [Header("Character Resources")]
+        public float currentHealth;
+        public int maxHealth;
+        public float currentStamina;
+        public int maxStamina;
     }
 }
 

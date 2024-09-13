@@ -17,6 +17,21 @@ namespace SL
             characterManager = GetComponent<CharacterManager>();
         }
 
+
+        protected virtual void Start()
+        {
+
+        }
+
+        public int CalculateBaseHealthBasedOnVitalityLevel(int vitality)
+        {
+            float health = 0;
+
+            health = vitality * 15;
+
+            return Mathf.RoundToInt(health);
+        }
+
         public int CalculateBaseStaminaBasedOnEnduranceLevel(int endurance)
         {
             float stamina = 0;
