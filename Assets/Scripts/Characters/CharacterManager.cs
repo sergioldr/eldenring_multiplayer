@@ -16,6 +16,8 @@ namespace SL
         [SerializeField] private bool applyRootMotion = false;
         [SerializeField] private bool canRotate = true;
         [SerializeField] private bool canMove = true;
+        [SerializeField] private bool isJumping = false;
+        [SerializeField] private bool isGrounded = true;
 
         protected virtual void Awake()
         {
@@ -28,6 +30,8 @@ namespace SL
 
         protected virtual void Update()
         {
+            animator.SetBool("IsGrounded", isGrounded);
+
             if (IsOwner)
             {
                 characterNetworkManager.networkPosition.Value = transform.position;
@@ -56,6 +60,10 @@ namespace SL
         {
 
         }
+
+
+
+        // Getters and Setters
 
         public CharacterNetworkManager GetCharacterNetworkManager()
         {
@@ -110,6 +118,26 @@ namespace SL
         public void SetCanMove(bool value)
         {
             canMove = value;
+        }
+
+        public bool GetIsJumping()
+        {
+            return isJumping;
+        }
+
+        public void SetIsJumping(bool value)
+        {
+            isJumping = value;
+        }
+
+        public bool GetIsGrounded()
+        {
+            return isGrounded;
+        }
+
+        public void SetIsGrounded(bool value)
+        {
+            isGrounded = value;
         }
 
     }

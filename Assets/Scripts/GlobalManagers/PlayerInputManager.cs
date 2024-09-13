@@ -26,6 +26,7 @@ namespace SL
         [Header("Player Action Inputs")]
         [SerializeField] private bool isDodgeInputActive = false;
         [SerializeField] private bool isSprintInputActive = false;
+        [SerializeField] private bool isJumpInputActive = false;
 
 
 
@@ -74,11 +75,16 @@ namespace SL
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += ctx => cameraInput = ctx.ReadValue<Vector2>();
+
+                // HERE WE HOLD THE DODGE BUTTON
                 playerControls.PlayerActions.Dodge.performed += ctx => isDodgeInputActive = true;
 
                 // HERE WE HOLD THE SPRINT BUTTON
                 playerControls.PlayerActions.Sprint.performed += ctx => isSprintInputActive = true;
                 playerControls.PlayerActions.Sprint.canceled += ctx => isSprintInputActive = false;
+
+                // HERE WE HOLD THE JUMP BUTTON
+                playerControls.PlayerActions.Jump.performed += ctx => isJumpInputActive = true;
             }
 
             playerControls.Enable();
@@ -110,6 +116,7 @@ namespace SL
             HandleCameraMovemtInput();
             HandleDodgeInput();
             HandleSprintInput();
+            HandleJumpInput();
         }
 
         private void HandlePlayerMovementInput()
@@ -160,6 +167,17 @@ namespace SL
                 playerManager.GetPlayerNetworkManager().isSprinting.Value = false;
             }
         }
+
+        private void HandleJumpInput()
+        {
+            if (isJumpInputActive)
+            {
+                isJumpInputActive = false;
+                playerManager.GetPlayerLocomotionManager().AttemptToJump();
+            }
+        }
+
+        // GETTERS AND SETTERS
 
         public float GetMovementAmount()
         {

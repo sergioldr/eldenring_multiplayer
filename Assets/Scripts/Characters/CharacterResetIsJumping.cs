@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace SL
 {
-    public class ResetActionFlag : StateMachineBehaviour
+    public class CharacterResetIsJumping : StateMachineBehaviour
     {
         private CharacterManager characterManager;
 
-        //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+        // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (characterManager == null)
@@ -14,10 +14,6 @@ namespace SL
                 characterManager = animator.GetComponent<CharacterManager>();
             }
 
-            characterManager.SetIsPerformingAction(false);
-            characterManager.SetApplyRootMotion(false);
-            characterManager.SetCanRotate(true);
-            characterManager.SetCanMove(true);
             characterManager.SetIsJumping(false);
         }
 

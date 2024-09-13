@@ -19,6 +19,13 @@ namespace SL
         [SerializeField] private float rotationSpeed = 15f;
         [SerializeField] private float sprintingStaminaCost = 2f;
 
+        [Header("Jump Settings")]
+        [SerializeField] private float jumpHeight = 4f;
+        [SerializeField] private float jumpStaminaCost = 25f;
+        [SerializeField] private float jumpForwardSpeed = 5f;
+        [SerializeField] private float jumpFreeFallSpeed = 2f;
+        private Vector3 jumpDirection;
+
         [Header("Dodge Settings")]
         private Vector3 rollDirection;
         [SerializeField] private float dodgeStaminaCost = 25f;
@@ -58,6 +65,8 @@ namespace SL
         {
             HandleGroundedMovement();
             HandleRotation();
+            HandleJumpingMovement();
+            HandleFreeFallMovement();
         }
 
         private void GetMovementValues()
@@ -96,8 +105,26 @@ namespace SL
                     characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
                 }
             }
+        }
 
+        private void HandleJumpingMovement()
+        {
+            if (playerManager.GetIsJumping())
+            {
+                playerManager.GetCharacterController().Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
+            }
+        }
 
+        private void HandleFreeFallMovement()
+        {
+            if (!playerManager.GetIsGrounded())
+            {
+                Vector3 freeFallDirection = PlayerCamera.Instance.GetCamera().transform.forward * PlayerInputManager.Instance.GetVerticalMovement();
+                freeFallDirection += PlayerCamera.Instance.GetCamera().transform.right * PlayerInputManager.Instance.GetHorizontalMovement();
+                freeFallDirection.y = 0;
+
+                playerManager.GetCharacterController().Move(freeFallDirection * jumpFreeFallSpeed * Time.deltaTime);
+            }
         }
 
         private void HandleRotation()
@@ -183,6 +210,53 @@ namespace SL
             {
                 playerNetworkManager.networkCurrentStamina.Value -= sprintingStaminaCost * Time.deltaTime;
             }
+        }
+
+        public void AttemptToJump()
+        {
+            bool isPerformingAction = playerManager.GetIsPerformingAction();
+            if (isPerformingAction) return;
+
+            PlayerNetworkManager playerNetworkManager = playerManager.GetPlayerNetworkManager();
+
+            if (playerNetworkManager.networkCurrentStamina.Value <= 0) return;
+
+            PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
+
+            if (playerManager.GetIsJumping()) return;
+
+            if (!playerManager.GetIsGrounded()) return;
+
+            playerAnimationManager.PlayTargetActionAnimation("Main_Jump_01", false);
+
+            playerManager.SetIsJumping(true);
+
+            playerNetworkManager.networkCurrentStamina.Value -= jumpStaminaCost;
+
+            jumpDirection = PlayerCamera.Instance.GetCamera().transform.forward * PlayerInputManager.Instance.GetVerticalMovement();
+            jumpDirection += PlayerCamera.Instance.GetCamera().transform.right * PlayerInputManager.Instance.GetHorizontalMovement();
+            jumpDirection.y = 0;
+
+            if (jumpDirection != Vector3.zero)
+            {
+                if (playerNetworkManager.isSprinting.Value)
+                {
+                    jumpDirection *= 1;
+                }
+                else if (PlayerInputManager.Instance.GetMovementAmount() > 0.5f)
+                {
+                    jumpDirection *= 0.5f;
+                }
+                else if (PlayerInputManager.Instance.GetMovementAmount() <= 0.5f)
+                {
+                    jumpDirection *= 0.25f;
+                }
+            }
+        }
+
+        public void ApplyJumpingVelocity()
+        {
+            jumpForceVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
         }
     }
 }
