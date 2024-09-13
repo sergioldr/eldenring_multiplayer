@@ -192,6 +192,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "1eb12b7a-7633-4a34-b495-d942854aa8f7",
+            "actions": [
+                {
+                    "name": "DeleteSavedGame",
+                    "type": "Button",
+                    "id": "9eec5da9-6ba6-48d5-83b8-59785041ce27",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ff931ca9-d389-4e1b-896c-ffc05c004a14",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteSavedGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d00fa664-589a-4faa-b192-06a5024cb262",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteSavedGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

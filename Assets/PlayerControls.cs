@@ -215,6 +215,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""1eb12b7a-7633-4a34-b495-d942854aa8f7"",
+            ""actions"": [
+                {
+                    ""name"": ""DeleteSavedGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""9eec5da9-6ba6-48d5-83b8-59785041ce27"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ff931ca9-d389-4e1b-896c-ffc05c004a14"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteSavedGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d00fa664-589a-4faa-b192-06a5024cb262"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteSavedGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -229,6 +268,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_Dodge = m_PlayerActions.FindAction("Dodge", throwIfNotFound: true);
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_DeleteSavedGame = m_UI.FindAction("DeleteSavedGame", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -236,6 +278,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerMovement.Disable() has not been called.");
         Debug.Assert(!m_PlayerCamera.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerCamera.Disable() has not been called.");
         Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerActions.Disable() has not been called.");
+        Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerControls.UI.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -439,6 +482,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_DeleteSavedGame;
+    public struct UIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DeleteSavedGame => m_Wrapper.m_UI_DeleteSavedGame;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @DeleteSavedGame.started += instance.OnDeleteSavedGame;
+            @DeleteSavedGame.performed += instance.OnDeleteSavedGame;
+            @DeleteSavedGame.canceled += instance.OnDeleteSavedGame;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @DeleteSavedGame.started -= instance.OnDeleteSavedGame;
+            @DeleteSavedGame.performed -= instance.OnDeleteSavedGame;
+            @DeleteSavedGame.canceled -= instance.OnDeleteSavedGame;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -451,5 +540,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnDodge(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnDeleteSavedGame(InputAction.CallbackContext context);
     }
 }
