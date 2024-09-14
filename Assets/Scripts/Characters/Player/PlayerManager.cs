@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,6 +6,9 @@ namespace SL
 {
     public class PlayerManager : CharacterManager
     {
+        [Header("DEBUG MENU")]
+        [SerializeField] private bool respawnCharacter = false;
+
         private PlayerLocomotionManager playerLocomotionManager;
         private PlayerAnimationManager playerAnimationManager;
         private PlayerNetworkManager playerNetworkManager;
@@ -28,6 +32,8 @@ namespace SL
 
             playerLocomotionManager.HandleAllMovement();
             playerStatsManager.RegenerateStamina();
+
+            DebugMenu();
         }
 
         protected override void LateUpdate()
@@ -59,6 +65,32 @@ namespace SL
                 playerNetworkManager.networkCurrentHealth.OnValueChanged += playerUIHUDManager.SetNewHealthValue;
                 playerNetworkManager.networkCurrentStamina.OnValueChanged += playerUIHUDManager.SetNewStaminaValue;
                 playerNetworkManager.networkCurrentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenerationTimer;
+            }
+
+            playerNetworkManager.networkCurrentHealth.OnValueChanged += playerNetworkManager.CheckHealth;
+        }
+
+        public override IEnumerator ProcessDeathEvent(bool selectDeathAnimation = false)
+        {
+            if (IsOwner)
+            {
+                PlayerUIManager.Instance.GetPlayerUIPopUpManager().SendYouDiedPopUp();
+            }
+
+            return base.ProcessDeathEvent(selectDeathAnimation);
+        }
+
+        public override void RespawnCharacter()
+        {
+            base.RespawnCharacter();
+
+            if (IsOwner)
+            {
+                playerNetworkManager.networkCurrentHealth.Value = playerNetworkManager.networkMaxHealth.Value;
+                playerNetworkManager.networkCurrentStamina.Value = playerNetworkManager.networkMaxStamina.Value;
+
+                // Reset player animation
+                playerAnimationManager.PlayTargetActionAnimation("Empty", true);
             }
         }
 
@@ -99,6 +131,17 @@ namespace SL
             playerNetworkManager.networkCurrentStamina.Value = currentCharacterData.currentStamina;
             playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.networkMaxStamina.Value);
         }
+
+        private void DebugMenu()
+        {
+            if (respawnCharacter)
+            {
+                respawnCharacter = false;
+                RespawnCharacter();
+            }
+        }
+
+        // GETTERS AND SETTERS
 
         public PlayerAnimationManager GetPlayerAnimationManager()
         {

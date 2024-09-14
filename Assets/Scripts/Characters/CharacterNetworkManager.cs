@@ -23,7 +23,7 @@ namespace SL
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
-        public NetworkVariable<float> networkCurrentHealth = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<int> networkCurrentHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<int> networkMaxHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> networkCurrentStamina = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<int> networkMaxStamina = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -35,6 +35,21 @@ namespace SL
         protected virtual void Awake()
         {
             characterManager = GetComponent<CharacterManager>();
+        }
+
+        public void CheckHealth(int oldValue, int newValue)
+        {
+            Debug.Log("Health Changed: " + oldValue + " -> " + newValue);
+            if (networkCurrentHealth.Value <= 0)
+            {
+                StartCoroutine(characterManager.ProcessDeathEvent());
+            }
+
+            // Prevetns the health from going over the max health
+            if (characterManager.IsOwner && networkCurrentHealth.Value > networkMaxHealth.Value)
+            {
+                networkCurrentHealth.Value = networkMaxHealth.Value;
+            }
         }
 
         // Server RPCs are a way to send a message from the client to the server

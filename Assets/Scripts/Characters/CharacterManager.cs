@@ -14,6 +14,7 @@ namespace SL
         private CharacterController characterController;
         private CharacterNetworkManager characterNetworkManager;
         private CharacterEffectsManager characterEffectsManager;
+        private CharacterAnimationManager characterAnimationManager;
 
         [Header("Character Flags")]
         [SerializeField] private bool isPerformingAction = false;
@@ -31,6 +32,7 @@ namespace SL
             characterController = GetComponent<CharacterController>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
+            characterAnimationManager = GetComponent<CharacterAnimationManager>();
         }
 
         protected virtual void Update()
@@ -66,7 +68,34 @@ namespace SL
 
         }
 
-        // Getters and Setters
+        public virtual IEnumerator ProcessDeathEvent(bool selectDeathAnimation = false)
+        {
+            if (IsOwner)
+            {
+                characterNetworkManager.networkCurrentHealth.Value = 0;
+                isDead.Value = true;
+
+                if (!selectDeathAnimation)
+                {
+                    characterAnimationManager.PlayTargetActionAnimation("Dead_01", true);
+                }
+            }
+
+            // TODO: PLAY SOME DEATH SFX
+
+            // TODO: REWARD PLAYERS
+
+            // TODO: DISABLE CHARACTER
+
+            yield return new WaitForSeconds(5);
+        }
+
+        public virtual void RespawnCharacter()
+        {
+
+        }
+
+        // GETTERS AND SETTERS
         public Animator GetCharacterAnimator()
         {
             return animator;

@@ -13,6 +13,7 @@ namespace SL
         [SerializeField] bool startGameAsClient;
 
         private PlayerUIHUDManager playerUIHUDManager;
+        private PlayerUIPopUpManager playerUIPopUpManager;
 
         private void Awake()
         {
@@ -26,6 +27,7 @@ namespace SL
             }
 
             playerUIHUDManager = GetComponentInChildren<PlayerUIHUDManager>();
+            playerUIPopUpManager = GetComponentInChildren<PlayerUIPopUpManager>();
         }
 
         private void Start()
@@ -48,6 +50,11 @@ namespace SL
         public PlayerUIHUDManager GetPlayerUIHUDManager()
         {
             return playerUIHUDManager;
+        }
+
+        public PlayerUIPopUpManager GetPlayerUIPopUpManager()
+        {
+            return playerUIPopUpManager;
         }
     }
 }

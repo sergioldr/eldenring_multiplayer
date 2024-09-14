@@ -27,7 +27,7 @@ namespace SL
         public int endurance;
 
         [Header("Character Resources")]
-        public float currentHealth;
+        public int currentHealth;
         public int maxHealth;
         public float currentStamina;
         public int maxStamina;
