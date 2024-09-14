@@ -13,6 +13,7 @@ namespace SL
         private PlayerAnimationManager playerAnimationManager;
         private PlayerNetworkManager playerNetworkManager;
         private PlayerStatsManager playerStatsManager;
+        private PlayerInventoryManager playerInventoryManager;
 
         protected override void Awake()
         {
@@ -22,6 +23,7 @@ namespace SL
             playerAnimationManager = GetComponent<PlayerAnimationManager>();
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
         }
 
         protected override void Update()
@@ -161,6 +163,11 @@ namespace SL
         public PlayerStatsManager GetPlayerStatsManager()
         {
             return playerStatsManager;
+        }
+
+        public PlayerInventoryManager GetPlayerInventoryManager()
+        {
+            return playerInventoryManager;
         }
     }
 }

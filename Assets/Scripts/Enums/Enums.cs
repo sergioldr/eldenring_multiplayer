@@ -18,4 +18,10 @@ namespace SL
         Slot_08,
         Slot_09,
     }
+
+    public enum WeaponModelSlot
+    {
+        RightHand,
+        LeftHand,
+    }
 }
