@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4428392f5d6b6b74f8ce6a66c0485d65, type: 3}
+  m_Name: MagicSword
+  m_EditorClassIdentifier: 
+  itemName: Magic Sword
+  itemIcon: {fileID: 21300000, guid: 68cfd3750d11cb446b36da28ff908d18, type: 3}
+  itemDescription: Forged from the very essence of the Aether, the Blade of Aetheris
+    pulsates with arcane energy. Its ethereal, crystalline blade shimmers with shifting
+    hues of violet and blue, making it appear almost intangible to the naked eye.
+    Enchanted by ancient sorcerers, the sword is capable of channeling the wielder's
+    magical power, enhancing spells and unleashing devastating arcane strikes. The
+    hilt is wrapped in a dark, enchanted fabric that never frays, and the guard is
+    adorned with glowing runes that hum softly when the sword is drawn. This sword
+    not only cuts through flesh but rends the very fabric of reality itself.
+  weaponModel: {fileID: 1189674227078662, guid: d6cf161f7da4cb74a95e6af7bf5692ee, type: 3}
+  strengthRequirement: 10
+  dexterityRequirement: 10
+  faithRequirement: 0
+  physicalDamage: 118
+  magicalDamage: 0
+  fireDamage: 0
+  lightningDamage: 0
+  holyDamage: 0
+  baseStaminaCost: 20
+  poiseDamage: 10

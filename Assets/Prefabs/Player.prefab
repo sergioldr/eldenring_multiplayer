@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2326270496
+  GlobalObjectIdHash: 1273860950
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -543,6 +543,10 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  currentRightHandWeaponID:
+    m_InternalValue: 0
+  currentLeftHandWeaponID:
+    m_InternalValue: 0
 --- !u!114 &6772235884894073522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,6 +566,7 @@ MonoBehaviour:
   isJumping: 0
   isGrounded: 1
   respawnCharacter: 0
+  switchRightWeapon: 0
 --- !u!114 &6372146398844399922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,8 +579,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b39d8e5b142244480cb86e0b576fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentRightHandWeapon: {fileID: 11400000, guid: e91a8d9d64130b940a7dcfd1d6bcd893, type: 2}
-  currentLeftHandWeapon: {fileID: 11400000, guid: e91a8d9d64130b940a7dcfd1d6bcd893, type: 2}
+  currentRightHandWeapon: {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  currentLeftHandWeapon: {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  weaponsInRightHandSlots:
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  weaponsInLeftHandSlots:
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  rightHandSlotIndex: 0
+  leftHandSlotIndex: 0
 --- !u!114 &-8514457987463595754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c64632f23676a240883436ee5caf6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightWeaponManager: {fileID: 0}
+  leftWeaponManager: {fileID: 0}
 --- !u!114 &-4560999744102237872
 MonoBehaviour:
   m_ObjectHideFlags: 0

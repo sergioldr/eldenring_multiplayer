@@ -8,12 +8,14 @@ namespace SL
     {
         [Header("DEBUG MENU")]
         [SerializeField] private bool respawnCharacter = false;
+        [SerializeField] private bool switchRightWeapon = false;
 
         private PlayerLocomotionManager playerLocomotionManager;
         private PlayerAnimationManager playerAnimationManager;
         private PlayerNetworkManager playerNetworkManager;
         private PlayerStatsManager playerStatsManager;
         private PlayerInventoryManager playerInventoryManager;
+        private PlayerEquipmentManager playerEquipmentManager;
 
         protected override void Awake()
         {
@@ -24,6 +26,7 @@ namespace SL
             playerNetworkManager = GetComponent<PlayerNetworkManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
         }
 
         protected override void Update()
@@ -70,6 +73,9 @@ namespace SL
             }
 
             playerNetworkManager.networkCurrentHealth.OnValueChanged += playerNetworkManager.CheckHealth;
+
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
         }
 
         public override IEnumerator ProcessDeathEvent(bool selectDeathAnimation = false)
@@ -141,6 +147,12 @@ namespace SL
                 respawnCharacter = false;
                 RespawnCharacter();
             }
+
+            if (switchRightWeapon)
+            {
+                switchRightWeapon = false;
+                playerEquipmentManager.SwitchRightWeapon();
+            }
         }
 
         // GETTERS AND SETTERS
@@ -168,6 +180,11 @@ namespace SL
         public PlayerInventoryManager GetPlayerInventoryManager()
         {
             return playerInventoryManager;
+        }
+
+        public PlayerEquipmentManager GetPlayerEquipmentManager()
+        {
+            return playerEquipmentManager;
         }
     }
 }
