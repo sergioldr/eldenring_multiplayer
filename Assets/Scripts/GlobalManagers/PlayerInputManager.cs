@@ -49,6 +49,11 @@ namespace SL
             SceneManager.activeSceneChanged += SceneManager_OnSceneChanged;
 
             Instance.enabled = false;
+
+            if (playerControls != null)
+            {
+                playerControls.Disable();
+            }
         }
 
         private void Update()
@@ -61,10 +66,20 @@ namespace SL
             if (newScene.buildIndex == WorldSaveGameManager.Instance.GetWorldSceneIndex())
             {
                 Instance.enabled = true;
+
+                if (playerControls != null)
+                {
+                    playerControls.Enable();
+                }
             }
             else
             {
                 Instance.enabled = false;
+
+                if (playerControls != null)
+                {
+                    playerControls.Disable();
+                }
             }
         }
 

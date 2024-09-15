@@ -7,6 +7,10 @@ namespace SL
     {
         private CharacterManager characterManager;
 
+        [Header("Character Slot")]
+        public NetworkVariable<int> networkCharacterSlot = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+
         [Header("Position")]
         public NetworkVariable<Vector3> networkPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<Quaternion> networkRotation = new NetworkVariable<Quaternion>(Quaternion.identity, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -21,6 +25,7 @@ namespace SL
 
         [Header("Flags")]
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         public NetworkVariable<int> networkCurrentHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -39,7 +44,6 @@ namespace SL
 
         public void CheckHealth(int oldValue, int newValue)
         {
-            Debug.Log("Health Changed: " + oldValue + " -> " + newValue);
             if (networkCurrentHealth.Value <= 0)
             {
                 StartCoroutine(characterManager.ProcessDeathEvent());

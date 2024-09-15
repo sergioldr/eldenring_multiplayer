@@ -18,7 +18,8 @@ namespace SL
             characterManager.SetApplyRootMotion(false);
             characterManager.SetCanRotate(true);
             characterManager.SetCanMove(true);
-            characterManager.SetIsJumping(false);
+
+            characterManager.GetCharacterNetworkManager().isJumping.Value = false;
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

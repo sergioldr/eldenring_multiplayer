@@ -109,7 +109,7 @@ namespace SL
 
         private void HandleJumpingMovement()
         {
-            if (playerManager.GetIsJumping())
+            if (playerManager.GetPlayerNetworkManager().isJumping.Value)
             {
                 playerManager.GetCharacterController().Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
             }
@@ -223,13 +223,13 @@ namespace SL
 
             PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
 
-            if (playerManager.GetIsJumping()) return;
+            if (playerNetworkManager.isJumping.Value) return;
 
             if (!playerManager.GetIsGrounded()) return;
 
             playerAnimationManager.PlayTargetActionAnimation("Main_Jump_01", false);
 
-            playerManager.SetIsJumping(true);
+            playerNetworkManager.isJumping.Value = true;
 
             playerNetworkManager.networkCurrentStamina.Value -= jumpStaminaCost;
 

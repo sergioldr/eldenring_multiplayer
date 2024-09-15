@@ -23,8 +23,8 @@ namespace SL
         public float zPosition;
 
         [Header("Character Stats")]
-        public int vitality;
-        public int endurance;
+        public int vitality = 1;
+        public int endurance = 1;
 
         [Header("Character Resources")]
         public int currentHealth;

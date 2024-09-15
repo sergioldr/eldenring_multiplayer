@@ -37,7 +37,7 @@ namespace SL
             }
             else
             {
-                if (!characterManager.GetIsJumping() && !fallingVelocityHasBeenSet)
+                if (!characterManager.GetCharacterNetworkManager().isJumping.Value && !fallingVelocityHasBeenSet)
                 {
                     fallingVelocityHasBeenSet = true;
                     jumpForceVelocity.y = fallStartForceVelocity;

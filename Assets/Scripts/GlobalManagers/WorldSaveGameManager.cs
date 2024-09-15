@@ -24,8 +24,8 @@ namespace SL
         private SaveFileDataWriter saveFileDataWriter;
 
         [Header("Current Character Data")]
-        [SerializeField] private CharacterSlot currentCharacterSlot;
-        [SerializeField] private CharacterSaveData currentCharacterData;
+        public CharacterSaveData currentCharacterData;
+        private CharacterSlot currentCharacterSlot;
         private string fileName = "";
 
         [Header("Character Slots")]
@@ -111,6 +111,11 @@ namespace SL
             saveFileDataWriter.SetSaveDataFileName(fileName);
 
             currentCharacterData = saveFileDataWriter.LoadSavedFile<CharacterSaveData>();
+
+            if (playerManager.IsOwner && playerManager.IsServer)
+            {
+                playerManager.GetPlayerNetworkManager().networkCharacterSlot.Value = (int)currentCharacterData.characterSlot;
+            }
 
             StartCoroutine(LoadWorldScene());
         }

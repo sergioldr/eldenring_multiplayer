@@ -72,10 +72,20 @@ namespace SL
                 playerNetworkManager.networkCurrentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenerationTimer;
             }
 
+            // STATS
             playerNetworkManager.networkCurrentHealth.OnValueChanged += playerNetworkManager.CheckHealth;
 
+            // EQUIPMENT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
+
+            // UPON CONNECTING TO THE SERVER, LOAD THE CHARACTER DATA FOR CLIENTS
+            // WE ONLY WANT TO DO THIS FOR CLIENTS, NOT THE SERVER. THE SERVER WILL LOAD THE CHARACTER DATA WHEN THE GAME STARTS
+            if (IsOwner && !IsServer)
+            {
+                CharacterSaveData currentCharacterData = WorldSaveGameManager.Instance.GetAllCharacterSlots()[playerNetworkManager.networkCharacterSlot.Value];
+                LoadCurrentCharacterData(ref currentCharacterData);
+            }
         }
 
         public override IEnumerator ProcessDeathEvent(bool selectDeathAnimation = false)

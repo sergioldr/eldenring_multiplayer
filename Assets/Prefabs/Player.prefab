@@ -875,6 +875,8 @@ MonoBehaviour:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
+  isJumping:
+    m_InternalValue: 0
   networkCurrentHealth:
     m_InternalValue: 0
   networkMaxHealth:
@@ -976,7 +978,6 @@ MonoBehaviour:
   applyRootMotion: 0
   canRotate: 1
   canMove: 1
-  isJumping: 0
   isGrounded: 1
   respawnCharacter: 0
   switchRightWeapon: 0

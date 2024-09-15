@@ -14,7 +14,10 @@ namespace SL
                 characterManager = animator.GetComponent<CharacterManager>();
             }
 
-            characterManager.SetIsJumping(false);
+            if (characterManager.IsOwner)
+            {
+                characterManager.GetCharacterNetworkManager().isJumping.Value = false;
+            }
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
