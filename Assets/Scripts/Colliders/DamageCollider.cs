@@ -23,7 +23,14 @@ namespace SL
 
         private void OnTriggerEnter(Collider other)
         {
-            CharacterManager damageTarget = other.GetComponent<CharacterManager>();
+            CharacterManager damageTarget = other.GetComponentInParent<CharacterManager>();
+
+            // IF YOU WANT TO SEARCH ON BOTH THE DAMAGEABLE CHARACTER COLLIDERS AND THE CHARACTER CONTROLLER COLLIDERS
+
+            // if (damageTarget == null)
+            // {
+            //     damageTarget = other.GetComponent<CharacterManager>();
+            // }
 
             if (damageTarget != null)
             {

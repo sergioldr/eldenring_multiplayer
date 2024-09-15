@@ -35,6 +35,11 @@ namespace SL
             characterAnimationManager = GetComponent<CharacterAnimationManager>();
         }
 
+        protected virtual void Start()
+        {
+            IgnoreMyOwnColliders();
+        }
+
         protected virtual void Update()
         {
             animator.SetBool("IsGrounded", isGrounded);
@@ -93,6 +98,29 @@ namespace SL
         public virtual void RespawnCharacter()
         {
 
+        }
+
+        protected virtual void IgnoreMyOwnColliders()
+        {
+            Collider characterControlerCollider = GetComponent<Collider>();
+            Collider[] damagebleCharacterColliders = GetComponentsInChildren<Collider>();
+
+            List<Collider> ignoreCollidersList = new List<Collider>();
+
+            foreach (Collider collider in damagebleCharacterColliders)
+            {
+                ignoreCollidersList.Add(collider);
+            }
+
+            ignoreCollidersList.Add(characterControlerCollider);
+
+            foreach (Collider collider in ignoreCollidersList)
+            {
+                foreach (Collider ignoreCollider in ignoreCollidersList)
+                {
+                    Physics.IgnoreCollision(collider, ignoreCollider);
+                }
+            }
         }
 
         // GETTERS AND SETTERS
