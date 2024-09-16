@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using UnityEngine;
 
 namespace SL
@@ -57,6 +56,7 @@ namespace SL
 
         public void SwitchRightWeapon()
         {
+            Debug.Log("Switching Right Weapon");
             if (!playerManager.IsOwner) return;
 
             playerManager.GetPlayerAnimationManager().PlayTargetActionAnimation("Swap_Right_Weapon_01", false, true, true, true);

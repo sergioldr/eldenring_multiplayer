@@ -43,7 +43,7 @@ namespace SL
         )
         {
             Animator characterAnimator = characterManager.GetCharacterAnimator();
-            //characterAnimator.applyRootMotion = applyRootMotion;
+            characterManager.SetApplyRootMotion(applyRootMotion);
             characterAnimator.CrossFade(targetAnimation, 0.2f);
 
             // This is to stop character performing other actions for example if you are stunned you can't perform any other action
@@ -54,6 +54,27 @@ namespace SL
 
             // Tell the SERVER/HOST we played an animation and play that animation for everybody else in the game
             characterManager.GetCharacterNetworkManager().NotifyTheServerOfActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+        }
+
+        public virtual void PlayTargetAttackActionAnimation(
+            string targetAnimation,
+            bool isPerformingAction,
+            bool applyRootMotion = true,
+            bool canRotate = false,
+            bool canMove = false
+        )
+        {
+            Animator characterAnimator = characterManager.GetCharacterAnimator();
+            characterManager.SetApplyRootMotion(applyRootMotion);
+            characterAnimator.CrossFade(targetAnimation, 0.2f);
+
+            // This is to stop character performing other actions for example if you are stunned you can't perform any other action
+            characterManager.SetIsPerformingAction(isPerformingAction);
+            characterManager.SetCanRotate(canRotate);
+            characterManager.SetCanMove(canMove);
+
+            // Tell the SERVER/HOST we played an animation and play that animation for everybody else in the game
+            characterManager.GetCharacterNetworkManager().NotifyTheServerOfAttackActionAnimationServerRpc(NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
         }
     }
 }

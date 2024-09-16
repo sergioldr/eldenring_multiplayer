@@ -16,6 +16,7 @@ namespace SL
         private PlayerStatsManager playerStatsManager;
         private PlayerInventoryManager playerInventoryManager;
         private PlayerEquipmentManager playerEquipmentManager;
+        private PlayerCombatManager playerCombatManager;
 
         protected override void Awake()
         {
@@ -27,6 +28,7 @@ namespace SL
             playerStatsManager = GetComponent<PlayerStatsManager>();
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
         }
 
         protected override void Update()
@@ -78,6 +80,7 @@ namespace SL
             // EQUIPMENT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
+            playerNetworkManager.currentWeaponBeingUsedID.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChanged;
 
             // UPON CONNECTING TO THE SERVER, LOAD THE CHARACTER DATA FOR CLIENTS
             // WE ONLY WANT TO DO THIS FOR CLIENTS, NOT THE SERVER. THE SERVER WILL LOAD THE CHARACTER DATA WHEN THE GAME STARTS
@@ -195,6 +198,11 @@ namespace SL
         public PlayerEquipmentManager GetPlayerEquipmentManager()
         {
             return playerEquipmentManager;
+        }
+
+        public PlayerCombatManager GetPlayerCombatManager()
+        {
+            return playerCombatManager;
         }
     }
 }

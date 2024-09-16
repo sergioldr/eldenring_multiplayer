@@ -19,10 +19,13 @@ namespace SL
         [SerializeField] public int lightningDamage = 0;
         [SerializeField] public int holyDamage = 0;
 
-        [Header("Stamina Costs")]
+        [Header("Weapon Stamina Costs")]
         [SerializeField] public int baseStaminaCost = 20;
 
         [Header("Weapon Poise Damage")]
         [SerializeField] public float poiseDamage = 10;
+
+        [Header("Weapon Actions")]
+        [SerializeField] public WeaponItemAction rightHandWeaponAction;
     }
 }

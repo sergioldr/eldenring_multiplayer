@@ -27,8 +27,7 @@ namespace SL
         [SerializeField] private bool isDodgeInputActive = false;
         [SerializeField] private bool isSprintInputActive = false;
         [SerializeField] private bool isJumpInputActive = false;
-
-
+        [SerializeField] private bool isAttacking = false;
 
         private void Awake()
         {
@@ -100,6 +99,9 @@ namespace SL
 
                 // HERE WE HOLD THE JUMP BUTTON
                 playerControls.PlayerActions.Jump.performed += ctx => isJumpInputActive = true;
+
+                // HERE WE HANDLE ATTACK INPUTS
+                playerControls.PlayerActions.Attack.performed += ctx => isAttacking = true;
             }
 
             playerControls.Enable();
@@ -132,6 +134,7 @@ namespace SL
             HandleDodgeInput();
             HandleSprintInput();
             HandleJumpInput();
+            HandleAttack();
         }
 
         private void HandlePlayerMovementInput()
@@ -189,6 +192,22 @@ namespace SL
             {
                 isJumpInputActive = false;
                 playerManager.GetPlayerLocomotionManager().AttemptToJump();
+            }
+        }
+
+        private void HandleAttack()
+        {
+            if (isAttacking)
+            {
+                isAttacking = false;
+
+                //TODO: IF WE HAVE A UI WINDOW OPEN, WE SHOULD NOT BE ABLE TO ATTACK
+
+                playerManager.GetPlayerNetworkManager().SetCharacterActionHand(true);
+
+                // TODO: HANDLE DOUBLE WEAPON ATTACKS
+
+                playerManager.GetPlayerCombatManager().PerformWeaponBasedAction(playerManager.GetPlayerInventoryManager().currentRightHandWeapon.rightHandWeaponAction, playerManager.GetPlayerInventoryManager().currentRightHandWeapon);
             }
         }
 

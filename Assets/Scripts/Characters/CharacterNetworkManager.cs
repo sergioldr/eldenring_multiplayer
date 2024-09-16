@@ -63,12 +63,12 @@ namespace SL
             // If this character is the HOST/Server then play the animation for all clients in all clients rpcs
             if (IsServer)
             {
-                PlayActionANimationForAllClientsClientRpc(clientID, animationID, applyRootMotion);
+                PlayActionAnimationForAllClientsClientRpc(clientID, animationID, applyRootMotion);
             }
         }
 
         [ClientRpc]
-        public void PlayActionANimationForAllClientsClientRpc(ulong clientID, string animationID, bool applyRootMotion)
+        public void PlayActionAnimationForAllClientsClientRpc(ulong clientID, string animationID, bool applyRootMotion)
         {
             if (clientID != NetworkManager.Singleton.LocalClientId)
             {
@@ -77,6 +77,32 @@ namespace SL
         }
 
         private void PerformActionAnimationFromServer(string animationID, bool applyRootMotion)
+        {
+            characterManager.SetApplyRootMotion(applyRootMotion);
+            characterManager.GetCharacterAnimator().CrossFade(animationID, 0.2f);
+        }
+
+        // Server RPCs are a way to send a message from the client to the server
+        [ServerRpc]
+        public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            // If this character is the HOST/Server then play the animation for all clients in all clients rpcs
+            if (IsServer)
+            {
+                PlayActionAttackAnimationForAllClientsClientRpc(clientID, animationID, applyRootMotion);
+            }
+        }
+
+        [ClientRpc]
+        public void PlayActionAttackAnimationForAllClientsClientRpc(ulong clientID, string animationID, bool applyRootMotion)
+        {
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                PerformAttackActionAnimationFromServer(animationID, applyRootMotion);
+            }
+        }
+
+        private void PerformAttackActionAnimationFromServer(string animationID, bool applyRootMotion)
         {
             characterManager.SetApplyRootMotion(applyRootMotion);
             characterManager.GetCharacterAnimator().CrossFade(animationID, 0.2f);

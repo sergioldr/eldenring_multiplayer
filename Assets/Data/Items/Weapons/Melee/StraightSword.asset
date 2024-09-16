@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4428392f5d6b6b74f8ce6a66c0485d65, type: 3}
   m_Name: StraightSword
   m_EditorClassIdentifier: 
-  itemID: 0
   itemName: Straight Sword
   itemIcon: {fileID: 21300000, guid: 094f53c92253b714091622c627903bd6, type: 3}
   itemDescription: Forged in the ancient fires of a long-lost kingdom, the Sword
@@ -34,3 +33,4 @@ MonoBehaviour:
   holyDamage: 0
   baseStaminaCost: 25
   poiseDamage: 20
+  rightHandWeaponAction: {fileID: 11400000, guid: 6ec08bcda2e8e3a43bc93fcf6a5c43de, type: 2}

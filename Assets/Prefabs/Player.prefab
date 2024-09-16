@@ -380,6 +380,9 @@ PrefabInstance:
       addedObject: {fileID: -2437635811738920106}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
       insertIndex: -1
+      addedObject: {fileID: -6679789806562138698}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
+      insertIndex: -1
       addedObject: {fileID: -3805790459125221613}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d25ae1ca9fc93e2439ee407f930efa21, type: 3}
       insertIndex: -1
@@ -860,6 +863,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde9ffd65e08d8d42b19b370352396df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkCharacterSlot:
+    m_InternalValue: 0
   networkPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
   networkRotation:
@@ -958,9 +963,15 @@ MonoBehaviour:
         byte0059: 0
         byte0060: 0
         byte0061: 0
+  currentWeaponBeingUsedID:
+    m_InternalValue: 0
   currentRightHandWeaponID:
     m_InternalValue: 0
   currentLeftHandWeaponID:
+    m_InternalValue: 0
+  isUsingRightHandWeapon:
+    m_InternalValue: 0
+  isUsingLeftHandWeapon:
     m_InternalValue: 0
 --- !u!114 &6772235884894073522
 MonoBehaviour:
@@ -997,8 +1008,8 @@ MonoBehaviour:
   currentLeftHandWeapon: {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
   weaponsInRightHandSlots:
   - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
-  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
-  - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
+  - {fileID: 11400000, guid: e91a8d9d64130b940a7dcfd1d6bcd893, type: 2}
+  - {fileID: 11400000, guid: 36979648e9e6e064ab8b682772c1432a, type: 2}
   weaponsInLeftHandSlots:
   - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
   - {fileID: 11400000, guid: f3f15ba6a7b2ce54fbbf40a6ca73dbdb, type: 2}
@@ -1101,6 +1112,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectToTest: {fileID: 11400000, guid: 558b91b2b9880e147bdbaae98bc04000, type: 2}
   processEffect: 0
+--- !u!114 &-6679789806562138698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6039314550701551483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f00788f7d833b2144b69cd34ac1bf839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeaponBeingUsed: {fileID: 0}
 --- !u!95 &-3805790459125221613
 Animator:
   serializedVersion: 7
