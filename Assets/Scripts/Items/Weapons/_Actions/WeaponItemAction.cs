@@ -13,8 +13,6 @@ namespace SL
             {
                 playerPerformingAction.GetPlayerNetworkManager().currentWeaponBeingUsedID.Value = weaponItemAction.itemID;
             }
-
-            Debug.Log("Performing action");
         }
     }
 }

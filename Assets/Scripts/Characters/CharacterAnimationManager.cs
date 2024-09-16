@@ -57,6 +57,7 @@ namespace SL
         }
 
         public virtual void PlayTargetAttackActionAnimation(
+            AttackType attackType,
             string targetAnimation,
             bool isPerformingAction,
             bool applyRootMotion = true,
@@ -65,6 +66,10 @@ namespace SL
         )
         {
             Animator characterAnimator = characterManager.GetCharacterAnimator();
+            CharacterCombatManager characterCombatManager = characterManager.GetCharacterCombatManager();
+
+            characterCombatManager.currentAttackType = attackType;
+
             characterManager.SetApplyRootMotion(applyRootMotion);
             characterAnimator.CrossFade(targetAnimation, 0.2f);
 

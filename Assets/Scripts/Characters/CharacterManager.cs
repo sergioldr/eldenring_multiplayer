@@ -15,6 +15,7 @@ namespace SL
         private CharacterNetworkManager characterNetworkManager;
         private CharacterEffectsManager characterEffectsManager;
         private CharacterAnimationManager characterAnimationManager;
+        private CharacterCombatManager characterCombatManager;
 
         [Header("Character Flags")]
         [SerializeField] private bool isPerformingAction = false;
@@ -32,6 +33,7 @@ namespace SL
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
             characterAnimationManager = GetComponent<CharacterAnimationManager>();
+            characterCombatManager = GetComponent<CharacterCombatManager>();
         }
 
         protected virtual void Start()
@@ -141,6 +143,11 @@ namespace SL
         public CharacterEffectsManager GetCharacterEffectsManager()
         {
             return characterEffectsManager;
+        }
+
+        public CharacterCombatManager GetCharacterCombatManager()
+        {
+            return characterCombatManager;
         }
 
         public bool GetApplyRootMotion()

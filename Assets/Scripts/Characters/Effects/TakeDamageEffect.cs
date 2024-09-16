@@ -9,31 +9,31 @@ namespace SL
         [SerializeField] private CharacterManager characterCausingDamage;
 
         [Header("Damage Options")]
-        [SerializeField] private float physicalDamage = 10f;
-        [SerializeField] private float magicDamage = 0f;
-        [SerializeField] private float fireDamage = 0f;
-        [SerializeField] private float lightningDamage = 0f;
-        [SerializeField] private float holyDamage = 0f;
+        public float physicalDamage = 10f;
+        public float magicDamage = 0f;
+        public float fireDamage = 0f;
+        public float lightningDamage = 0f;
+        public float holyDamage = 0f;
 
         [Header("Final Damage")]
         private int finalDamage = 0;
 
         [Header("Poise")]
-        [SerializeField] private float poiseDamage = 0f;
-        [SerializeField] private bool poiseIsBroken = false;
+        public float poiseDamage = 0f;
+        public bool poiseIsBroken = false;
 
         [Header("Animation")]
-        [SerializeField] private bool playDamageAnimation = true;
-        [SerializeField] private bool manuallySelectDamageAnimation = false;
-        [SerializeField] private string damageAnimation = "TakeDamage";
+        public bool playDamageAnimation = true;
+        public bool manuallySelectDamageAnimation = false;
+        public string damageAnimation = "TakeDamage";
 
         [Header("Sound FX")]
-        [SerializeField] private bool playDamageSFX = true;
-        [SerializeField] private AudioClip damageSFX;
+        public bool playDamageSFX = true;
+        public AudioClip damageSFX;
 
         [Header("Direction Damage Taken From")]
-        [SerializeField] private float angleHitFrom = 0f;
-        [SerializeField] private Vector3 contactPoint;
+        public float angleHitFrom = 0f;
+        public Vector3 contactPoint;
 
         public override void ProcessEffect(CharacterManager characterManager)
         {
@@ -42,14 +42,17 @@ namespace SL
             if (characterManager.GetIsDead()) return;
 
             CalculateDamage(characterManager);
+
         }
 
         private void CalculateDamage(CharacterManager character)
         {
             if (!character.IsOwner) return;
-            if (characterCausingDamage != null) return;
 
-            Debug.Log("Calculating Damageeeeee");
+            if (characterCausingDamage != null)
+            {
+                // CHECK FOR DAMAGE MODIFIERS
+            }
 
             finalDamage = Mathf.RoundToInt(physicalDamage + magicDamage + fireDamage + lightningDamage + holyDamage);
 
@@ -58,18 +61,44 @@ namespace SL
                 finalDamage = 1;
             };
 
-            Debug.Log("Final Damage: " + finalDamage);
+            Debug.Log("Character: " + character.name + " took " + finalDamage + " damage");
 
             character.GetCharacterNetworkManager().networkCurrentHealth.Value -= finalDamage;
         }
 
-        public void SetDamagesEffects(float physical, float magic, float fire, float lightning, float holy)
+        public void SetDamagesEffects(float physical, float magic, float fire, float lightning, float holy, float poise)
         {
             physicalDamage = physical;
             magicDamage = magic;
             fireDamage = fire;
             lightningDamage = lightning;
             holyDamage = holy;
+            poiseDamage = poise;
+        }
+
+        public void SetDamageModifiers(float modifier)
+        {
+            physicalDamage *= modifier;
+            magicDamage *= modifier;
+            fireDamage *= modifier;
+            lightningDamage *= modifier;
+            holyDamage *= modifier;
+        }
+
+        public void SetDamageDirection(
+            float angle,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+        )
+        {
+            angleHitFrom = angle;
+            contactPoint = new Vector3(contactPointX, contactPointY, contactPointZ);
+        }
+
+        public void SetCharacterCausingDamage(CharacterManager character)
+        {
+            characterCausingDamage = character;
         }
     }
 }

@@ -8,24 +8,28 @@ namespace SL
         public GameObject weaponModel;
 
         [Header("Weapon Requirements")]
-        [SerializeField] public int strengthRequirement = 0;
-        [SerializeField] public int dexterityRequirement = 0;
-        [SerializeField] public int faithRequirement = 0;
+        public int strengthRequirement = 0;
+        public int dexterityRequirement = 0;
+        public int faithRequirement = 0;
 
         [Header("Weapon Stats")]
-        [SerializeField] public int physicalDamage = 0;
-        [SerializeField] public int magicalDamage = 0;
-        [SerializeField] public int fireDamage = 0;
-        [SerializeField] public int lightningDamage = 0;
-        [SerializeField] public int holyDamage = 0;
+        public int physicalDamage = 0;
+        public int magicalDamage = 0;
+        public int fireDamage = 0;
+        public int lightningDamage = 0;
+        public int holyDamage = 0;
+
+        [Header("Attack Modifiers")]
+        public float lightAttackModifier = 1.1f;
 
         [Header("Weapon Stamina Costs")]
-        [SerializeField] public int baseStaminaCost = 20;
+        public int baseStaminaCost = 20;
+        public float lightAttackStaminaCostMultiplier = 0.9f;
 
         [Header("Weapon Poise Damage")]
-        [SerializeField] public float poiseDamage = 10;
+        public float poiseDamage = 10;
 
         [Header("Weapon Actions")]
-        [SerializeField] public WeaponItemAction rightHandWeaponAction;
+        public WeaponItemAction rightHandWeaponAction;
     }
 }

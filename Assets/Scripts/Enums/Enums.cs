@@ -24,4 +24,9 @@ namespace SL
         RightHand,
         LeftHand,
     }
+
+    public enum AttackType
+    {
+        LightAttack,
+    }
 }

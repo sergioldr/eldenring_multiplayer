@@ -14,11 +14,8 @@ namespace SL
 
         private void CalculateStaminaDamage(CharacterManager characterManager)
         {
-            Debug.Log("TakeStaminaDamageCharacterEffect: Processing Instant Effect");
-
             if (characterManager.IsOwner)
             {
-                Debug.Log("TakeStaminaDamageCharacterEffect: Processing Instant Effect on Owner");
                 CharacterNetworkManager characterNetworkManager = characterManager.GetCharacterNetworkManager();
                 characterNetworkManager.networkCurrentStamina.Value -= staminaDamageAmount;
             }

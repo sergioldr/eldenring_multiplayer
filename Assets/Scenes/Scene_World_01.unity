@@ -5961,6 +5961,7 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
 --- !u!65 &598282382
 BoxCollider:
   m_ObjectHideFlags: 0

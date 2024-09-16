@@ -29,7 +29,7 @@ namespace SL
 
             if (playerNetworkManager.isUsingRightHandWeapon.Value)
             {
-                playerAnimationManager.PlayTargetAttackActionAnimation(light_attack_01, true);
+                playerAnimationManager.PlayTargetAttackActionAnimation(AttackType.LightAttack, light_attack_01, true);
             }
 
             if (playerNetworkManager.isUsingLeftHandWeapon.Value)

@@ -4,7 +4,7 @@ namespace SL
 {
     public class Item : ScriptableObject
     {
-        public int itemID { get; private set; }
+        [SerializeField] public int itemID { get; private set; }
 
         [Header("Item Information")]
         [SerializeField] private string itemName;

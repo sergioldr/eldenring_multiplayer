@@ -4,7 +4,7 @@ namespace SL
 {
     public class WeaponManager : MonoBehaviour
     {
-        [SerializeField] private MeleeWeaponDamageCollider meleeWDamageCollider;
+        public MeleeWeaponDamageCollider meleeWDamageCollider { get; private set; }
 
         private void Awake()
         {
@@ -21,6 +21,8 @@ namespace SL
                 weapon.lightningDamage,
                 weapon.holyDamage
             );
+
+            meleeWDamageCollider.lightAttackModifier = weapon.lightAttackModifier;
         }
     }
 }

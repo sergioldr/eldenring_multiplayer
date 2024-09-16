@@ -9,7 +9,6 @@ namespace SL
 
         public virtual void ProcessEffect(CharacterManager characterManager)
         {
-            Debug.Log("InstantCharacterEffect: Processing Instant Effect");
         }
     }
 }

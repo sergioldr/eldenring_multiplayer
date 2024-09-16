@@ -13,7 +13,6 @@ namespace SL
 
         public void ProcessInstantEffect(InstantCharacterEffect effect)
         {
-            Debug.Log("CharacterEffectsManager: Processing Instant Effect");
             effect.ProcessEffect(characterManager);
         }
     }

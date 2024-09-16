@@ -9,46 +9,37 @@ namespace SL
         protected Collider damageCollider;
 
         [Header("Damage")]
-        [SerializeField] private float physicalDamage = 10f;
-        [SerializeField] private float magicDamage = 0f;
-        [SerializeField] private float fireDamage = 0f;
-        [SerializeField] private float lightningDamage = 0f;
-        [SerializeField] private float holyDamage = 0f;
+        public float physicalDamage = 10f;
+        public float magicDamage = 0f;
+        public float fireDamage = 0f;
+        public float lightningDamage = 0f;
+        public float holyDamage = 0f;
+
+        [Header("Poise")]
+        public float poiseDamage = 0f;
 
         [Header("Contact Point")]
-        private Vector3 contactPoint;
+        protected Vector3 contactPoint;
 
         [Header("Characters Damaged")]
         protected List<CharacterManager> charactersDamaged = new List<CharacterManager>();
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void Awake()
         {
-            CharacterManager damageTarget = other.GetComponentInParent<CharacterManager>();
-
-            // IF YOU WANT TO SEARCH ON BOTH THE DAMAGEABLE CHARACTER COLLIDERS AND THE CHARACTER CONTROLLER COLLIDERS
-
-            // if (damageTarget == null)
-            // {
-            //     damageTarget = other.GetComponent<CharacterManager>();
-            // }
-
-            if (damageTarget != null)
+            if (damageCollider == null)
             {
-                contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-                DamagetTarget(damageTarget);
+                damageCollider = GetComponent<Collider>();
             }
+        }
+
+        protected virtual void OnTriggerEnter(Collider other)
+        {
+
         }
 
         protected virtual void DamagetTarget(CharacterManager damageTarget)
         {
-            if (charactersDamaged.Contains(damageTarget)) return;
 
-            charactersDamaged.Add(damageTarget);
-
-            TakeDamageEffect takeDamageEffect = Instantiate(WorldCharacterEffectsManager.Instance.GetTakeDamageEffect());
-            takeDamageEffect.SetDamagesEffects(physicalDamage, magicDamage, fireDamage, lightningDamage, holyDamage);
-
-            damageTarget.GetCharacterEffectsManager().ProcessInstantEffect(takeDamageEffect);
         }
 
         public virtual void EnableDamageCollider()

@@ -56,7 +56,6 @@ namespace SL
 
         public void SwitchRightWeapon()
         {
-            Debug.Log("Switching Right Weapon");
             if (!playerManager.IsOwner) return;
 
             playerManager.GetPlayerAnimationManager().PlayTargetActionAnimation("Swap_Right_Weapon_01", false, true, true, true);
@@ -150,6 +149,32 @@ namespace SL
                 leftHandSlot.LoadWeapon(leftHandWeaponModel);
                 leftWeaponManager = leftHandWeaponModel.GetComponent<WeaponManager>();
                 leftWeaponManager.SetWeaponDamage(playerManager, playerInventoryManager.currentLeftHandWeapon);
+            }
+        }
+
+        public void OpenDamageCollider()
+        {
+            if (playerManager.GetPlayerNetworkManager().isUsingRightHandWeapon.Value)
+            {
+                rightWeaponManager.meleeWDamageCollider.EnableDamageCollider();
+            }
+            else if (playerManager.GetPlayerNetworkManager().isUsingLeftHandWeapon.Value)
+            {
+                leftWeaponManager.meleeWDamageCollider.EnableDamageCollider();
+            }
+
+            // TODO: PLAY SFX HERE
+        }
+
+        public void CloseDamageCollider()
+        {
+            if (playerManager.GetPlayerNetworkManager().isUsingRightHandWeapon.Value)
+            {
+                rightWeaponManager.meleeWDamageCollider.DisableDamageCollider();
+            }
+            else if (playerManager.GetPlayerNetworkManager().isUsingLeftHandWeapon.Value)
+            {
+                leftWeaponManager.meleeWDamageCollider.DisableDamageCollider();
             }
         }
     }

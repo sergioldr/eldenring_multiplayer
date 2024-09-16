@@ -82,7 +82,8 @@ namespace SL
             characterManager.GetCharacterAnimator().CrossFade(animationID, 0.2f);
         }
 
-        // Server RPCs are a way to send a message from the client to the server
+
+        // ATTACK ANIMATION
         [ServerRpc]
         public void NotifyTheServerOfAttackActionAnimationServerRpc(ulong clientID, string animationID, bool applyRootMotion)
         {
@@ -106,6 +107,100 @@ namespace SL
         {
             characterManager.SetApplyRootMotion(applyRootMotion);
             characterManager.GetCharacterAnimator().CrossFade(animationID, 0.2f);
+        }
+
+        // DAMAGE ANIMATION
+        [ServerRpc(RequireOwnership = false)]
+        public void NotifyTheServerOfDamageActionAnimationServerRpc(
+            ulong characterCausingDamageID,
+            ulong damageCharacterID,
+            float physical,
+            float magic,
+            float fire,
+            float lightning,
+            float holy,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+        )
+        {
+            if (IsServer)
+            {
+                NotifyTheServerOfDamageActionAnimationClientRpc(
+                    characterCausingDamageID,
+                    damageCharacterID,
+                    physical,
+                    magic,
+                    fire,
+                    lightning,
+                    holy,
+                    poiseDamage,
+                    angleHitFrom,
+                    contactPointX,
+                    contactPointY,
+                    contactPointZ
+                );
+            }
+        }
+
+        [ClientRpc]
+        public void NotifyTheServerOfDamageActionAnimationClientRpc(
+            ulong characterCausingDamageID,
+            ulong damageCharacterID,
+            float physical,
+            float magic,
+            float fire,
+            float lightning,
+            float holy,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+        )
+        {
+            ProcessCharacterDamageFromServer(
+                characterCausingDamageID,
+                damageCharacterID,
+                physical,
+                magic,
+                fire,
+                lightning,
+                holy,
+                poiseDamage,
+                angleHitFrom,
+                contactPointX,
+                contactPointY,
+                contactPointZ
+            );
+        }
+
+        private void ProcessCharacterDamageFromServer(
+            ulong characterCausingDamageID,
+            ulong damageCharacterID,
+            float physical,
+            float magic,
+            float fire,
+            float lightning,
+            float holy,
+            float poiseDamage,
+            float angleHitFrom,
+            float contactPointX,
+            float contactPointY,
+            float contactPointZ
+        )
+        {
+            CharacterManager damagedCharacter = NetworkManager.Singleton.SpawnManager.SpawnedObjects[damageCharacterID].gameObject.GetComponent<CharacterManager>();
+            CharacterManager characterCausingDamage = NetworkManager.Singleton.SpawnManager.SpawnedObjects[characterCausingDamageID].gameObject.GetComponent<CharacterManager>();
+
+            TakeDamageEffect takeDamageEffect = Instantiate(WorldCharacterEffectsManager.Instance.GetTakeDamageEffect());
+            takeDamageEffect.SetDamagesEffects(physical, magic, fire, lightning, holy, poiseDamage);
+            takeDamageEffect.SetDamageDirection(angleHitFrom, contactPointX, contactPointY, contactPointZ);
+            takeDamageEffect.SetCharacterCausingDamage(characterCausingDamage);
+
+            damagedCharacter.GetCharacterEffectsManager().ProcessInstantEffect(takeDamageEffect);
         }
     }
 }

@@ -207,7 +207,9 @@ namespace SL
 
                 // TODO: HANDLE DOUBLE WEAPON ATTACKS
 
-                playerManager.GetPlayerCombatManager().PerformWeaponBasedAction(playerManager.GetPlayerInventoryManager().currentRightHandWeapon.rightHandWeaponAction, playerManager.GetPlayerInventoryManager().currentRightHandWeapon);
+                PlayerInventoryManager playerInventoryManager = playerManager.GetPlayerInventoryManager();
+
+                playerManager.GetPlayerCombatManager().PerformWeaponBasedAction(playerInventoryManager.currentRightHandWeapon.rightHandWeaponAction, playerInventoryManager.currentRightHandWeapon);
             }
         }
 
