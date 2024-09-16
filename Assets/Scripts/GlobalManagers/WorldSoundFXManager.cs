@@ -6,8 +6,11 @@ namespace SL
     {
         public static WorldSoundFXManager Instance { get; private set; }
 
-        [Header("Action Sound FX")]
-        [SerializeField] private AudioClip rollSoundFX;
+        [Header("Action Sound")]
+        [SerializeField] private AudioClip rollSoundSFX;
+
+        [Header("Damage Sounds")]
+        [SerializeField] private AudioClip[] takeDamageSoundListSFX;
 
         private void Awake()
         {
@@ -29,7 +32,12 @@ namespace SL
 
         public AudioClip GetRollSoundFX()
         {
-            return rollSoundFX;
+            return rollSoundSFX;
+        }
+
+        public AudioClip GetTakeDamageSoundFX()
+        {
+            return takeDamageSoundListSFX[Random.Range(0, takeDamageSoundListSFX.Length)];
         }
     }
 }

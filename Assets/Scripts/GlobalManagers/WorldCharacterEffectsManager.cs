@@ -12,6 +12,9 @@ namespace SL
 
         [SerializeField] private List<InstantCharacterEffect> instantCharacterEffects = new List<InstantCharacterEffect>();
 
+        [Header("VFX")]
+        public GameObject bloodSplatterVFX;
+
         private void Awake()
         {
             if (Instance == null)

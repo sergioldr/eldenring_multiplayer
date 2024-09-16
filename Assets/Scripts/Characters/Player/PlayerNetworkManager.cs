@@ -42,7 +42,6 @@ namespace SL
             WeaponItem newWeapon = Instantiate(WorldItemDatabase.Instance.GetWeaponItemByID(newWeaponID));
             playerManager.GetPlayerInventoryManager().currentRightHandWeapon = newWeapon;
             playerManager.GetPlayerEquipmentManager().LoadWeaponOnRightHand();
-            currentWeaponBeingUsedID.Value = newWeapon.itemID;
         }
 
         public void OnCurrentLeftHandWeaponIDChanged(int oldWeaponID, int newWeaponID)

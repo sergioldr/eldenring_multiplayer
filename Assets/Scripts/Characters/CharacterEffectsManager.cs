@@ -6,6 +6,9 @@ namespace SL
     {
         private CharacterManager characterManager;
 
+        [Header("VFX")]
+        [SerializeField] private GameObject bloodSplatterVFX;
+
         protected virtual void Awake()
         {
             characterManager = GetComponent<CharacterManager>();
@@ -14,6 +17,19 @@ namespace SL
         public void ProcessInstantEffect(InstantCharacterEffect effect)
         {
             effect.ProcessEffect(characterManager);
+        }
+
+        public void PlayBloodVFX(Vector3 contactPoint)
+        {
+            Debug.Log("Playing Blood VFX" + WorldCharacterEffectsManager.Instance.bloodSplatterVFX);
+            if (bloodSplatterVFX != null)
+            {
+                GameObject bloodSplatter = Instantiate(bloodSplatterVFX, contactPoint, Quaternion.identity);
+            }
+            else
+            {
+                GameObject bloodSplatter = Instantiate(WorldCharacterEffectsManager.Instance.bloodSplatterVFX, contactPoint, Quaternion.identity) as GameObject;
+            }
         }
     }
 }

@@ -42,7 +42,8 @@ namespace SL
             if (characterManager.GetIsDead()) return;
 
             CalculateDamage(characterManager);
-
+            PlayDamageSFX(characterManager);
+            PlayDamageVFX(characterManager);
         }
 
         private void CalculateDamage(CharacterManager character)
@@ -64,6 +65,20 @@ namespace SL
             Debug.Log("Character: " + character.name + " took " + finalDamage + " damage");
 
             character.GetCharacterNetworkManager().networkCurrentHealth.Value -= finalDamage;
+        }
+
+        private void PlayDamageVFX(CharacterManager character)
+        {
+            // IF WE HAVE FIRE DAMAGE, PLAY FIRE VFX
+            // IF WE HAVE LIGHTNING DAMAGE, PLAY LIGHTNING VFX
+
+            character.GetCharacterEffectsManager().PlayBloodVFX(contactPoint);
+        }
+
+        private void PlayDamageSFX(CharacterManager character)
+        {
+            // PLAY DAMAGE SFX
+            character.GetCharacterSoundFXManager().PlayTakeDamageSoundFX();
         }
 
         public void SetDamagesEffects(float physical, float magic, float fire, float lightning, float holy, float poise)

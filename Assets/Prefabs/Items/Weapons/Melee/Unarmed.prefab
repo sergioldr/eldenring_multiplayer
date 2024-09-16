@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c491ab964fdeae4498d44c9bbf833ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeWDamageCollider: {fileID: 0}
 --- !u!1 &1747219705089834872
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +95,9 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  poiseDamage: 0
   characterCausingDamage: {fileID: 0}
+  lightAttackModifier: 0
 --- !u!135 &8128868215033465596
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -112,7 +113,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

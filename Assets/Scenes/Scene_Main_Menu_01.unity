@@ -1069,6 +1069,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &439690583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4173251789607701523, guid: 16cfd72dedfbaf24990e297009150cd2, type: 3}
+  m_PrefabInstance: {fileID: 5355830292534415098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &439690587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439690583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27fcc6bef3d08704fb1c197b37cbaac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &586611064
 GameObject:
   m_ObjectHideFlags: 0
@@ -4120,6 +4137,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4868457448956206719, guid: 505fb789b7977204f8b3a39d2f3c7a13, type: 3}
+      propertyPath: bloodSplatterVFX
+      value: 
+      objectReference: {fileID: 6823200998282874702, guid: e93153b9330920f49b90b2b9c0f6770b, type: 3}
+    - target: {fileID: 4868457448956206719, guid: 505fb789b7977204f8b3a39d2f3c7a13, type: 3}
       propertyPath: takeDamageEffect
       value: 
       objectReference: {fileID: 11400000, guid: e5459aa5adb9a0040b25c9db76739dd6, type: 2}
@@ -4484,6 +4505,22 @@ PrefabInstance:
       propertyPath: rollSoundFX
       value: 
       objectReference: {fileID: 8300000, guid: 1186a0fea47cd2643a0f4564b4d8c6cc, type: 3}
+    - target: {fileID: 1827748563782104820, guid: 14c87350b4b63b840ac37046fa53c7d2, type: 3}
+      propertyPath: rollSoundSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 1186a0fea47cd2643a0f4564b4d8c6cc, type: 3}
+    - target: {fileID: 1827748563782104820, guid: 14c87350b4b63b840ac37046fa53c7d2, type: 3}
+      propertyPath: takeDamageSoundListSFX.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1827748563782104820, guid: 14c87350b4b63b840ac37046fa53c7d2, type: 3}
+      propertyPath: 'takeDamageSoundListSFX.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 7cbd6cd765888ff418d01d98bd1ce9c2, type: 3}
+    - target: {fileID: 1827748563782104820, guid: 14c87350b4b63b840ac37046fa53c7d2, type: 3}
+      propertyPath: 'takeDamageSoundListSFX.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3df9bbbc130ccb344af5f3fc793a630f, type: 3}
     - target: {fileID: 5275531726752498818, guid: 14c87350b4b63b840ac37046fa53c7d2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4706,7 +4743,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4173251789607701523, guid: 16cfd72dedfbaf24990e297009150cd2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 439690587}
   m_SourcePrefab: {fileID: 100100000, guid: 16cfd72dedfbaf24990e297009150cd2, type: 3}
 --- !u!1001 &5703219742086091920
 PrefabInstance:

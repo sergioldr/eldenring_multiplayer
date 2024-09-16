@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 namespace SL
 {
@@ -56,6 +57,8 @@ namespace SL
         {
             base.OnNetworkSpawn();
 
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
+
             if (IsOwner)
             {
                 PlayerCamera.Instance.SetPlayerManager(this);
@@ -88,6 +91,20 @@ namespace SL
             {
                 CharacterSaveData currentCharacterData = WorldSaveGameManager.Instance.GetAllCharacterSlots()[playerNetworkManager.networkCharacterSlot.Value];
                 LoadCurrentCharacterData(ref currentCharacterData);
+            }
+        }
+
+        private void OnClientConnectedCallback(ulong clientID)
+        {
+            if (!IsServer && IsOwner)
+            {
+                foreach (PlayerManager player in WorldGameSessionManager.Instance.activePlayers)
+                {
+                    if (player != this)
+                    {
+                        player.LoadOtherPlayerCharacterWhenJoiningServer();
+                    }
+                }
             }
         }
 
@@ -151,6 +168,12 @@ namespace SL
             playerNetworkManager.networkCurrentHealth.Value = currentCharacterData.currentHealth;
             playerNetworkManager.networkCurrentStamina.Value = currentCharacterData.currentStamina;
             playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.networkMaxStamina.Value);
+        }
+
+        private void LoadOtherPlayerCharacterWhenJoiningServer()
+        {
+            playerNetworkManager.OnCurrentRightHandWeaponIDChanged(0, playerNetworkManager.currentRightHandWeaponID.Value);
+            playerNetworkManager.OnCurrentLeftHandWeaponIDChanged(0, playerNetworkManager.currentLeftHandWeaponID.Value);
         }
 
         private void DebugMenu()

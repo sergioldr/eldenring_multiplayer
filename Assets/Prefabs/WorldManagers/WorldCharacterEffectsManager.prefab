@@ -44,3 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60cb5c0e20df7a4eab1bfa275b776e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  takeDamageEffect: {fileID: 11400000, guid: e5459aa5adb9a0040b25c9db76739dd6, type: 2}
+  instantCharacterEffects:
+  - {fileID: 11400000, guid: 558b91b2b9880e147bdbaae98bc04000, type: 2}
+  - {fileID: 11400000, guid: e5459aa5adb9a0040b25c9db76739dd6, type: 2}
+  bloodSplatterVFX: {fileID: 6823200998282874702, guid: e93153b9330920f49b90b2b9c0f6770b, type: 3}

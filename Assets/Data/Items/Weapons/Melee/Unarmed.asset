@@ -24,5 +24,8 @@ MonoBehaviour:
   fireDamage: 0
   lightningDamage: 0
   holyDamage: 0
+  lightAttackModifier: 1.1
   baseStaminaCost: 10
+  lightAttackStaminaCostMultiplier: 0.9
   poiseDamage: 5
+  rightHandWeaponAction: {fileID: 11400000, guid: 6ec08bcda2e8e3a43bc93fcf6a5c43de, type: 2}

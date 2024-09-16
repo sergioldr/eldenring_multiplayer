@@ -16,6 +16,7 @@ namespace SL
         private CharacterEffectsManager characterEffectsManager;
         private CharacterAnimationManager characterAnimationManager;
         private CharacterCombatManager characterCombatManager;
+        private CharacterSoundFXManager characterSoundFXManager;
 
         [Header("Character Flags")]
         [SerializeField] private bool isPerformingAction = false;
@@ -34,6 +35,7 @@ namespace SL
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
             characterAnimationManager = GetComponent<CharacterAnimationManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
+            characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
         }
 
         protected virtual void Start()
@@ -148,6 +150,11 @@ namespace SL
         public CharacterCombatManager GetCharacterCombatManager()
         {
             return characterCombatManager;
+        }
+
+        public CharacterSoundFXManager GetCharacterSoundFXManager()
+        {
+            return characterSoundFXManager;
         }
 
         public bool GetApplyRootMotion()

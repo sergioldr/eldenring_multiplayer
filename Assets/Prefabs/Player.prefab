@@ -1110,6 +1110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 745d20fb52347a24a953962d9f5fae45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodSplatterVFX: {fileID: 6823200998282874702, guid: e93153b9330920f49b90b2b9c0f6770b, type: 3}
   effectToTest: {fileID: 11400000, guid: 558b91b2b9880e147bdbaae98bc04000, type: 2}
   processEffect: 0
 --- !u!114 &-6679789806562138698
@@ -1124,6 +1125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00788f7d833b2144b69cd34ac1bf839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAttackType: 0
   currentWeaponBeingUsed: {fileID: 0}
 --- !u!95 &-3805790459125221613
 Animator:
