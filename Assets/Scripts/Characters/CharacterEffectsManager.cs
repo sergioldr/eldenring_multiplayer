@@ -21,7 +21,6 @@ namespace SL
 
         public void PlayBloodVFX(Vector3 contactPoint)
         {
-            Debug.Log("Playing Blood VFX" + WorldCharacterEffectsManager.Instance.bloodSplatterVFX);
             if (bloodSplatterVFX != null)
             {
                 GameObject bloodSplatter = Instantiate(bloodSplatterVFX, contactPoint, Quaternion.identity);

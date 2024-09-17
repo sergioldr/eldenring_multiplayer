@@ -25,7 +25,7 @@ namespace SL
         [Header("Animation")]
         public bool playDamageAnimation = true;
         public bool manuallySelectDamageAnimation = false;
-        public string damageAnimation = "TakeDamage";
+        public string damageAnimation;
 
         [Header("Sound FX")]
         public bool playDamageSFX = true;
@@ -42,6 +42,8 @@ namespace SL
             if (characterManager.GetIsDead()) return;
 
             CalculateDamage(characterManager);
+            PlayDirectionalDamageAnimation(characterManager);
+
             PlayDamageSFX(characterManager);
             PlayDamageVFX(characterManager);
         }
@@ -79,6 +81,48 @@ namespace SL
         {
             // PLAY DAMAGE SFX
             character.GetCharacterSoundFXManager().PlayTakeDamageSoundFX();
+        }
+
+        private void PlayDirectionalDamageAnimation(CharacterManager character)
+        {
+            if (!character.IsOwner) return;
+
+            CharacterAnimationManager animator = character.GetCharacterAnimationManager();
+
+            // TODO: CALCULATE IF POISE IS BROKEN
+            poiseIsBroken = true;
+
+            if (angleHitFrom >= 145 && angleHitFrom <= 180)
+            {
+                // PLAY FRONT DAMAGE ANIMATION
+                damageAnimation = animator.GetRandomAnimation(animator.forward_medium_damage);
+            }
+            else if (angleHitFrom <= -145 && angleHitFrom >= -180)
+            {
+                // PLAY FRONT DAMAGE ANIMATION
+                damageAnimation = animator.GetRandomAnimation(animator.forward_medium_damage);
+            }
+            else if (angleHitFrom >= -45 && angleHitFrom <= 45)
+            {
+                // PLAY BACK DAMAGE ANIMATION
+                damageAnimation = animator.GetRandomAnimation(animator.backward_medium_damage);
+            }
+            else if (angleHitFrom >= -144 && angleHitFrom <= 45)
+            {
+                // PLAY LEFT DAMAGE ANIMATION
+                damageAnimation = animator.GetRandomAnimation(animator.left_medium_damage);
+            }
+            else if (angleHitFrom >= 45 && angleHitFrom <= 144)
+            {
+                // PLAY RIGHT DAMAGE ANIMATION
+                damageAnimation = animator.GetRandomAnimation(animator.right_medium_damage);
+            }
+
+            if (poiseIsBroken)
+            {
+                animator.lastDamageAnimationPlayed = damageAnimation;
+                animator.PlayTargetActionAnimation(damageAnimation, true);
+            }
         }
 
         public void SetDamagesEffects(float physical, float magic, float fire, float lightning, float holy, float poise)

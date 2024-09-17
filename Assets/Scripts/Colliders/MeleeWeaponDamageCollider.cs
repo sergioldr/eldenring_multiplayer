@@ -48,6 +48,10 @@ namespace SL
             TakeDamageEffect takeDamageEffect = Instantiate(WorldCharacterEffectsManager.Instance.GetTakeDamageEffect());
             takeDamageEffect.SetDamagesEffects(physicalDamage, magicDamage, fireDamage, lightningDamage, holyDamage, poiseDamage);
 
+            float angleHitFrom = Vector3.SignedAngle(characterCausingDamage.transform.forward, damageTarget.transform.forward, Vector3.up);
+            takeDamageEffect.angleHitFrom = angleHitFrom;
+
+
             switch (characterCausingDamage.GetCharacterCombatManager().currentAttackType)
             {
                 case AttackType.LightAttack:

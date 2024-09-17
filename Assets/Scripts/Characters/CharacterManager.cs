@@ -132,6 +132,11 @@ namespace SL
             return animator;
         }
 
+        public CharacterAnimationManager GetCharacterAnimationManager()
+        {
+            return characterAnimationManager;
+        }
+
         public CharacterNetworkManager GetCharacterNetworkManager()
         {
             return characterNetworkManager;
