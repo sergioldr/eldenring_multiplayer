@@ -23,9 +23,14 @@ namespace SL
         public NetworkVariable<float> networkVerticalMovement = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> networkAmountMovement = new NetworkVariable<float>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+        [Header("Target")]
+        public NetworkVariable<ulong> currentTargetNetworkObjectID = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         [Header("Flags")]
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isJumping = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isChargingHeavyAttack = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("Resources")]
         public NetworkVariable<int> networkCurrentHealth = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -54,6 +59,27 @@ namespace SL
             {
                 networkCurrentHealth.Value = networkMaxHealth.Value;
             }
+        }
+
+        public void OnLockOnTargetIDChanged(ulong oldID, ulong newID)
+        {
+            if (!IsOwner)
+            {
+                characterManager.GetCharacterCombatManager().currentTarget = NetworkManager.Singleton.SpawnManager.SpawnedObjects[newID].gameObject.GetComponent<CharacterManager>();
+            }
+        }
+
+        public void OnIsLockedOnChanged(bool oldIsLockedOn, bool newIsLockedOn)
+        {
+            if (!newIsLockedOn)
+            {
+                characterManager.GetCharacterCombatManager().currentTarget = null;
+            }
+        }
+
+        public void OnIsChargingHeavyAttackChanged(bool oldIsChargingHeavyAttack, bool newIsChargingHeavyAttack)
+        {
+            characterManager.GetCharacterAnimator().SetBool("IsCharginHeavyAttack", newIsChargingHeavyAttack);
         }
 
         // Server RPCs are a way to send a message from the client to the server

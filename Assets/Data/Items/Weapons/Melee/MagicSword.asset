@@ -36,3 +36,4 @@ MonoBehaviour:
   lightAttackStaminaCostMultiplier: 0.9
   poiseDamage: 10
   rightHandWeaponAction: {fileID: 11400000, guid: 6ec08bcda2e8e3a43bc93fcf6a5c43de, type: 2}
+  rightHandHeavyWeaponAction: {fileID: 11400000, guid: 36469061b4c4ac14cbb481eb9501a1dd, type: 2}

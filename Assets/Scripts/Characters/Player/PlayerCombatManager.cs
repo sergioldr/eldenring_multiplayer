@@ -17,6 +17,16 @@ namespace SL
             playerManager = GetComponent<PlayerManager>();
         }
 
+        public override void SetTarget(CharacterManager newTarget)
+        {
+            base.SetTarget(newTarget);
+
+            if (playerManager.IsOwner)
+            {
+                PlayerCamera.Instance.SetLockCameraHeight();
+            }
+        }
+
         public void PerformWeaponBasedAction(WeaponItemAction weaponAction, WeaponItem weaponPerformingAction)
         {
             if (playerManager.IsOwner)

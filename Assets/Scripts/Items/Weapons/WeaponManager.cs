@@ -23,6 +23,8 @@ namespace SL
             );
 
             meleeWDamageCollider.lightAttackModifier = weapon.lightAttackModifier;
+            meleeWDamageCollider.heavyAttackModifier = weapon.heavyAttackModifier;
+            meleeWDamageCollider.chargeHeavyAttackModifier = weapon.chargeHeavyAttackModifier;
         }
     }
 }

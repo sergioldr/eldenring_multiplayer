@@ -28,5 +28,7 @@ namespace SL
     public enum AttackType
     {
         LightAttack,
+        HeavyAttack,
+        ChargedHeavyAttack
     }
 }

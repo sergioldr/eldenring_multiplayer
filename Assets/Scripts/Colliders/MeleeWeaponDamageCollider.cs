@@ -9,6 +9,8 @@ namespace SL
 
         [Header("Weapon Attack Modifier")]
         public float lightAttackModifier;
+        public float heavyAttackModifier;
+        public float chargeHeavyAttackModifier;
 
         protected override void Awake()
         {
@@ -56,6 +58,12 @@ namespace SL
             {
                 case AttackType.LightAttack:
                     ApplyAttackDamageModifiers(lightAttackModifier, takeDamageEffect);
+                    break;
+                case AttackType.HeavyAttack:
+                    ApplyAttackDamageModifiers(heavyAttackModifier, takeDamageEffect);
+                    break;
+                case AttackType.ChargedHeavyAttack:
+                    ApplyAttackDamageModifiers(chargeHeavyAttackModifier, takeDamageEffect);
                     break;
                 default:
                     break;

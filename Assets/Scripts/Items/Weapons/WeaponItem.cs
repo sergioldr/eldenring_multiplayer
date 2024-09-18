@@ -21,6 +21,8 @@ namespace SL
 
         [Header("Attack Modifiers")]
         public float lightAttackModifier = 1.1f;
+        public float heavyAttackModifier = 1.5f;
+        public float chargeHeavyAttackModifier = 2.0f;
 
         [Header("Weapon Stamina Costs")]
         public int baseStaminaCost = 20;
@@ -31,5 +33,6 @@ namespace SL
 
         [Header("Weapon Actions")]
         public WeaponItemAction rightHandWeaponAction;
+        public WeaponItemAction rightHandHeavyWeaponAction;
     }
 }

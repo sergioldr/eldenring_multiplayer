@@ -16,6 +16,9 @@ namespace SL
         private protected bool fallingVelocityHasBeenSet = false;
         private protected float inAirTimer = 0.0f;
 
+        [Header("Flags")]
+        public bool isRolling = false;
+
 
         protected virtual void Awake()
         {

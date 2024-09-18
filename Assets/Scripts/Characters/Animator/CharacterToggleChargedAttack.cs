@@ -2,26 +2,20 @@ using UnityEngine;
 
 namespace SL
 {
-    public class CharacterResetActionFlag : StateMachineBehaviour
+    public class CharacterToggleChargedAttack : StateMachineBehaviour
     {
-        private CharacterManager characterManager;
+        CharacterManager character;
 
-        //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+        [SerializeField] private AttackType attackType;
+        // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (characterManager == null)
+            if (character == null)
             {
-                characterManager = animator.GetComponent<CharacterManager>();
+                character = animator.GetComponent<CharacterManager>();
             }
 
-            characterManager.SetIsPerformingAction(false);
-            characterManager.SetApplyRootMotion(false);
-            characterManager.SetCanRotate(true);
-            characterManager.SetCanMove(true);
-
-            characterManager.GetCharacterLocomotionManager().isRolling = false;
-
-            characterManager.GetCharacterNetworkManager().isJumping.Value = false;
+            character.GetCharacterCombatManager().currentAttackType = attackType;
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -49,4 +43,3 @@ namespace SL
         //}
     }
 }
-

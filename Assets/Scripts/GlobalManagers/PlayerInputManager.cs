@@ -17,6 +17,12 @@ namespace SL
         [SerializeField] private float cameraVerticalInput;
         [SerializeField] private float cameraHorizontalInput;
 
+        [Header("Lock On Inputs")]
+        [SerializeField] private bool isLockOnInputActive = false;
+        [SerializeField] private bool isLockOnRightInputActive = false;
+        [SerializeField] private bool isLockOnLeftInputActive = false;
+        private Coroutine lockOnCoroutine;
+
         [Header("Player Movement Inputs")]
         [SerializeField] private Vector2 movementInput;
         [SerializeField] private float playerVerticalInput;
@@ -28,6 +34,14 @@ namespace SL
         [SerializeField] private bool isSprintInputActive = false;
         [SerializeField] private bool isJumpInputActive = false;
         [SerializeField] private bool isAttacking = false;
+
+        [Header("Trigger Inputs")]
+        [SerializeField] private bool isTriggerHeavyAttackInput = false;
+
+        [Header("Bumper Inputs")]
+        [SerializeField] private bool isHoldingHeavyAttackInput = false;
+
+
 
         private void Awake()
         {
@@ -60,28 +74,6 @@ namespace SL
             HandleAllInputs();
         }
 
-        private void SceneManager_OnSceneChanged(Scene oldScene, Scene newScene)
-        {
-            if (newScene.buildIndex == WorldSaveGameManager.Instance.GetWorldSceneIndex())
-            {
-                Instance.enabled = true;
-
-                if (playerControls != null)
-                {
-                    playerControls.Enable();
-                }
-            }
-            else
-            {
-                Instance.enabled = false;
-
-                if (playerControls != null)
-                {
-                    playerControls.Disable();
-                }
-            }
-        }
-
         private void OnEnable()
         {
             if (playerControls == null)
@@ -89,6 +81,11 @@ namespace SL
                 playerControls = new PlayerControls();
                 playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += ctx => cameraInput = ctx.ReadValue<Vector2>();
+
+                // HERE WE HOLD THE LOCK ON BUTTON
+                playerControls.PlayerActions.LockOn.performed += ctx => isLockOnInputActive = true;
+                playerControls.PlayerActions.SeekRightLockOnTarget.performed += ctx => isLockOnRightInputActive = true;
+                playerControls.PlayerActions.SeekLeftLockOnTarget.performed += ctx => isLockOnLeftInputActive = true;
 
                 // HERE WE HOLD THE DODGE BUTTON
                 playerControls.PlayerActions.Dodge.performed += ctx => isDodgeInputActive = true;
@@ -102,6 +99,11 @@ namespace SL
 
                 // HERE WE HANDLE ATTACK INPUTS
                 playerControls.PlayerActions.Attack.performed += ctx => isAttacking = true;
+
+                // HERE WE HANDLE HEAVY ATTACK INPUTS
+                playerControls.PlayerActions.HeavyAttack.performed += ctx => isTriggerHeavyAttackInput = true;
+                playerControls.PlayerActions.ChargeHeavyAttack.performed += ctx => isHoldingHeavyAttackInput = true;
+                playerControls.PlayerActions.ChargeHeavyAttack.canceled += ctx => isHoldingHeavyAttackInput = false;
             }
 
             playerControls.Enable();
@@ -127,14 +129,40 @@ namespace SL
             SceneManager.activeSceneChanged -= SceneManager_OnSceneChanged;
         }
 
+        private void SceneManager_OnSceneChanged(Scene oldScene, Scene newScene)
+        {
+            if (newScene.buildIndex == WorldSaveGameManager.Instance.GetWorldSceneIndex())
+            {
+                Instance.enabled = true;
+
+                if (playerControls != null)
+                {
+                    playerControls.Enable();
+                }
+            }
+            else
+            {
+                Instance.enabled = false;
+
+                if (playerControls != null)
+                {
+                    playerControls.Disable();
+                }
+            }
+        }
+
         private void HandleAllInputs()
         {
             HandlePlayerMovementInput();
             HandleCameraMovemtInput();
+            HandleLockOnInput();
+            HandleLockOnSwitchTargetInput();
             HandleDodgeInput();
             HandleSprintInput();
             HandleJumpInput();
             HandleAttack();
+            HandleHeavyAttacks();
+            HandleChargeHeavyAttack();
         }
 
         private void HandlePlayerMovementInput()
@@ -153,16 +181,101 @@ namespace SL
                 playerMoveAmount = 1;
             }
 
+
             PlayerAnimationManager playerAnimationManager = playerManager.GetPlayerAnimationManager();
             bool isSprinting = playerManager.GetPlayerNetworkManager().isSprinting.Value;
+            bool isLockedOn = playerManager.GetPlayerNetworkManager().isLockedOn.Value;
 
-            playerAnimationManager.UpdateAnimatorMovementParameters(0, playerMoveAmount, isSprinting);
+            if (!isLockedOn || isSprinting)
+            {
+                playerAnimationManager.UpdateAnimatorMovementParameters(0, playerMoveAmount, isSprinting);
+            }
+            else
+            {
+                playerAnimationManager.UpdateAnimatorMovementParameters(playerHorizontalInput, playerVerticalInput, isSprinting);
+            }
+
         }
 
         private void HandleCameraMovemtInput()
         {
             cameraVerticalInput = cameraInput.y;
             cameraHorizontalInput = cameraInput.x;
+        }
+
+        private void HandleLockOnInput()
+        {
+            if (playerManager.GetPlayerNetworkManager().isLockedOn.Value)
+            {
+                if (playerManager.GetPlayerCombatManager().currentTarget == null)
+                {
+                    return;
+                }
+
+                if (playerManager.GetPlayerCombatManager().currentTarget.GetIsDead())
+                {
+                    playerManager.GetPlayerNetworkManager().isLockedOn.Value = false;
+                }
+
+                if (lockOnCoroutine != null)
+                {
+                    StopCoroutine(lockOnCoroutine);
+                }
+
+                lockOnCoroutine = StartCoroutine(PlayerCamera.Instance.WaitThenFindNewTarget());
+            }
+            if (isLockOnInputActive && playerManager.GetPlayerNetworkManager().isLockedOn.Value)
+            {
+                isLockOnInputActive = false;
+                PlayerCamera.Instance.ClearLockOnTargets();
+                playerManager.GetPlayerNetworkManager().isLockedOn.Value = false;
+                return;
+            }
+            if (isLockOnInputActive && !playerManager.GetPlayerNetworkManager().isLockedOn.Value)
+            {
+                isLockOnInputActive = false;
+
+                PlayerCamera.Instance.HandleLocatingLockOnTargets();
+
+                if (PlayerCamera.Instance.nearestLockOnTarget != null)
+                {
+                    playerManager.GetPlayerCombatManager().SetTarget(PlayerCamera.Instance.nearestLockOnTarget);
+                    playerManager.GetPlayerNetworkManager().isLockedOn.Value = true;
+                }
+            }
+        }
+
+        private void HandleLockOnSwitchTargetInput()
+        {
+            if (isLockOnLeftInputActive)
+            {
+                isLockOnLeftInputActive = false;
+
+                if (playerManager.GetPlayerNetworkManager().isLockedOn.Value)
+                {
+                    PlayerCamera.Instance.HandleLocatingLockOnTargets();
+
+                    if (PlayerCamera.Instance.leftLockOnTarget != null)
+                    {
+                        playerManager.GetPlayerCombatManager().SetTarget(PlayerCamera.Instance.leftLockOnTarget);
+                    }
+                }
+            }
+
+            if (isLockOnRightInputActive)
+            {
+                isLockOnRightInputActive = false;
+
+                if (playerManager.GetPlayerNetworkManager().isLockedOn.Value)
+                {
+                    PlayerCamera.Instance.HandleLocatingLockOnTargets();
+
+                    if (PlayerCamera.Instance.rightLockOnTarget != null)
+                    {
+                        playerManager.GetPlayerCombatManager().SetTarget(PlayerCamera.Instance.rightLockOnTarget);
+                    }
+                }
+            }
         }
 
         private void HandleDodgeInput()
@@ -207,9 +320,36 @@ namespace SL
 
                 // TODO: HANDLE DOUBLE WEAPON ATTACKS
 
+                PlayerCombatManager playerCombatManager = playerManager.GetPlayerCombatManager();
                 PlayerInventoryManager playerInventoryManager = playerManager.GetPlayerInventoryManager();
 
-                playerManager.GetPlayerCombatManager().PerformWeaponBasedAction(playerInventoryManager.currentRightHandWeapon.rightHandWeaponAction, playerInventoryManager.currentRightHandWeapon);
+                playerCombatManager.PerformWeaponBasedAction(playerInventoryManager.currentRightHandWeapon.rightHandWeaponAction, playerInventoryManager.currentRightHandWeapon);
+            }
+        }
+
+        private void HandleHeavyAttacks()
+        {
+            if (isTriggerHeavyAttackInput)
+            {
+                isTriggerHeavyAttackInput = false;
+
+                playerManager.GetPlayerNetworkManager().SetCharacterActionHand(true);
+
+                PlayerCombatManager playerCombatManager = playerManager.GetPlayerCombatManager();
+                PlayerInventoryManager playerInventoryManager = playerManager.GetPlayerInventoryManager();
+
+                playerCombatManager.PerformWeaponBasedAction(playerInventoryManager.currentRightHandWeapon.rightHandHeavyWeaponAction, playerInventoryManager.currentRightHandWeapon);
+            }
+        }
+
+        private void HandleChargeHeavyAttack()
+        {
+            if (playerManager.GetIsPerformingAction())
+            {
+                if (playerManager.GetPlayerNetworkManager().isUsingRightHandWeapon.Value)
+                {
+                    playerManager.GetPlayerNetworkManager().isChargingHeavyAttack.Value = isHoldingHeavyAttackInput;
+                }
             }
         }
 

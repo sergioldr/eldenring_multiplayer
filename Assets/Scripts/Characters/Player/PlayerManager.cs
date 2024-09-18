@@ -80,10 +80,18 @@ namespace SL
             // STATS
             playerNetworkManager.networkCurrentHealth.OnValueChanged += playerNetworkManager.CheckHealth;
 
+            // LOCK ON
+            playerNetworkManager.isLockedOn.OnValueChanged += playerNetworkManager.OnIsLockedOnChanged;
+            playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged += playerNetworkManager.OnLockOnTargetIDChanged;
+
+
             // EQUIPMENT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
             playerNetworkManager.currentWeaponBeingUsedID.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChanged;
+
+            // FLAGS
+            playerNetworkManager.isChargingHeavyAttack.OnValueChanged += playerNetworkManager.OnIsChargingHeavyAttackChanged;
 
             // UPON CONNECTING TO THE SERVER, LOAD THE CHARACTER DATA FOR CLIENTS
             // WE ONLY WANT TO DO THIS FOR CLIENTS, NOT THE SERVER. THE SERVER WILL LOAD THE CHARACTER DATA WHEN THE GAME STARTS
@@ -92,6 +100,44 @@ namespace SL
                 CharacterSaveData currentCharacterData = WorldSaveGameManager.Instance.GetAllCharacterSlots()[playerNetworkManager.networkCharacterSlot.Value];
                 LoadCurrentCharacterData(ref currentCharacterData);
             }
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+
+            if (IsOwner)
+            {
+
+                PlayerUIHUDManager playerUIHUDManager = PlayerUIManager.Instance.GetPlayerUIHUDManager();
+
+                // THIS UPDATES THE TOTAL AMOUNT OF HEALTH OR STAMINA WHEN THE STAT LINKED TO EITHER CHANGES (VITALITY, ENDURANCE)
+                playerNetworkManager.networkVitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
+                playerNetworkManager.networkEndurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
+
+                // THIS UPDATES UI STATS BARS WHEN A STAT CHANGES (HEALTH, STAMINA)
+                playerNetworkManager.networkCurrentHealth.OnValueChanged -= playerUIHUDManager.SetNewHealthValue;
+                playerNetworkManager.networkCurrentStamina.OnValueChanged -= playerUIHUDManager.SetNewStaminaValue;
+                playerNetworkManager.networkCurrentStamina.OnValueChanged -= playerStatsManager.ResetStaminaRegenerationTimer;
+            }
+
+            // STATS
+            playerNetworkManager.networkCurrentHealth.OnValueChanged -= playerNetworkManager.CheckHealth;
+
+            // LOCK ON
+            playerNetworkManager.isLockedOn.OnValueChanged -= playerNetworkManager.OnIsLockedOnChanged;
+            playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged -= playerNetworkManager.OnLockOnTargetIDChanged;
+
+
+            // EQUIPMENT
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChanged;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChanged;
+            playerNetworkManager.currentWeaponBeingUsedID.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBeingUsedIDChanged;
+
+            // FLAGS
+            playerNetworkManager.isChargingHeavyAttack.OnValueChanged -= playerNetworkManager.OnIsChargingHeavyAttackChanged;
         }
 
         private void OnClientConnectedCallback(ulong clientID)
@@ -124,6 +170,7 @@ namespace SL
 
             if (IsOwner)
             {
+                SetIsDead(false);
                 playerNetworkManager.networkCurrentHealth.Value = playerNetworkManager.networkMaxHealth.Value;
                 playerNetworkManager.networkCurrentStamina.Value = playerNetworkManager.networkMaxStamina.Value;
 
@@ -172,8 +219,14 @@ namespace SL
 
         private void LoadOtherPlayerCharacterWhenJoiningServer()
         {
+            Debug.Log("Loading other player character data");
             playerNetworkManager.OnCurrentRightHandWeaponIDChanged(0, playerNetworkManager.currentRightHandWeaponID.Value);
             playerNetworkManager.OnCurrentLeftHandWeaponIDChanged(0, playerNetworkManager.currentLeftHandWeaponID.Value);
+
+            if (playerNetworkManager.isLockedOn.Value)
+            {
+                playerNetworkManager.OnLockOnTargetIDChanged(0, playerNetworkManager.currentTargetNetworkObjectID.Value);
+            }
         }
 
         private void DebugMenu()

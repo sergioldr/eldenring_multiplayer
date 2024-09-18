@@ -87,6 +87,8 @@ namespace SL
         {
             if (!character.IsOwner) return;
 
+            if (character.GetIsDead()) return;
+
             CharacterAnimationManager animator = character.GetCharacterAnimationManager();
 
             // TODO: CALCULATE IF POISE IS BROKEN

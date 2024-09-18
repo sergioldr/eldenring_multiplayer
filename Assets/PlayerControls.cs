@@ -178,12 +178,57 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Heavy Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""13a0c5c3-97e3-4869-a516-d2ba97569173"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Charge Heavy Attack"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""979db649-b9d6-47fa-9b1d-d27b7591f924"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Sprint"",
                     ""type"": ""PassThrough"",
                     ""id"": ""31eea35b-bd42-427d-8d3c-03dae92b185b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a96b2ce3-223e-4fc5-8c64-08cbcd8d7cf6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Seek Left Lock On Target"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7ec68ba-ce4b-4746-9976-35bcebaede54"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Seek Right Lock On Target"",
+                    ""type"": ""Button"",
+                    ""id"": ""60bda93a-37ef-474b-a817-f9f2396c421f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -246,11 +291,55 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""84b25bcc-2d46-479c-a688-e2b9d6fd70a2"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c14a7b0d-7355-4a00-b9ad-374d82084a0c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heavy Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27804876-12a1-4841-b55a-205c3ed2612b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Heavy Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e9a91b1-3f23-48c1-ac89-0243b68c2466"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Charge Heavy Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ad661ed-dcf6-4cf6-a829-8ce71e19f9bb"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Charge Heavy Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -273,6 +362,72 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c6e0bb1-287a-4577-ace1-d62e8a31dfed"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""519e2040-6289-433a-9eee-8199b191db7d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc8fe945-64c1-46b3-82b7-b2d5be8d01fc"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Seek Left Lock On Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42507abe-5eb3-4de5-93fb-d29f46d58292"",
+                    ""path"": ""<Mouse>/backButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Seek Left Lock On Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09ea58fd-6839-4dd2-be00-185fe034bdc7"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Seek Right Lock On Target"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f22690db-a78f-4773-8547-97426945e72d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Seek Right Lock On Target"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -331,7 +486,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Dodge = m_PlayerActions.FindAction("Dodge", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerActions_HeavyAttack = m_PlayerActions.FindAction("Heavy Attack", throwIfNotFound: true);
+        m_PlayerActions_ChargeHeavyAttack = m_PlayerActions.FindAction("Charge Heavy Attack", throwIfNotFound: true);
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
+        m_PlayerActions_LockOn = m_PlayerActions.FindAction("Lock On", throwIfNotFound: true);
+        m_PlayerActions_SeekLeftLockOnTarget = m_PlayerActions.FindAction("Seek Left Lock On Target", throwIfNotFound: true);
+        m_PlayerActions_SeekRightLockOnTarget = m_PlayerActions.FindAction("Seek Right Lock On Target", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_DeleteSavedGame = m_UI.FindAction("DeleteSavedGame", throwIfNotFound: true);
@@ -499,7 +659,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Dodge;
     private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_Attack;
+    private readonly InputAction m_PlayerActions_HeavyAttack;
+    private readonly InputAction m_PlayerActions_ChargeHeavyAttack;
     private readonly InputAction m_PlayerActions_Sprint;
+    private readonly InputAction m_PlayerActions_LockOn;
+    private readonly InputAction m_PlayerActions_SeekLeftLockOnTarget;
+    private readonly InputAction m_PlayerActions_SeekRightLockOnTarget;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -507,7 +672,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Dodge => m_Wrapper.m_PlayerActions_Dodge;
         public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
+        public InputAction @HeavyAttack => m_Wrapper.m_PlayerActions_HeavyAttack;
+        public InputAction @ChargeHeavyAttack => m_Wrapper.m_PlayerActions_ChargeHeavyAttack;
         public InputAction @Sprint => m_Wrapper.m_PlayerActions_Sprint;
+        public InputAction @LockOn => m_Wrapper.m_PlayerActions_LockOn;
+        public InputAction @SeekLeftLockOnTarget => m_Wrapper.m_PlayerActions_SeekLeftLockOnTarget;
+        public InputAction @SeekRightLockOnTarget => m_Wrapper.m_PlayerActions_SeekRightLockOnTarget;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -526,9 +696,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @HeavyAttack.started += instance.OnHeavyAttack;
+            @HeavyAttack.performed += instance.OnHeavyAttack;
+            @HeavyAttack.canceled += instance.OnHeavyAttack;
+            @ChargeHeavyAttack.started += instance.OnChargeHeavyAttack;
+            @ChargeHeavyAttack.performed += instance.OnChargeHeavyAttack;
+            @ChargeHeavyAttack.canceled += instance.OnChargeHeavyAttack;
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @LockOn.started += instance.OnLockOn;
+            @LockOn.performed += instance.OnLockOn;
+            @LockOn.canceled += instance.OnLockOn;
+            @SeekLeftLockOnTarget.started += instance.OnSeekLeftLockOnTarget;
+            @SeekLeftLockOnTarget.performed += instance.OnSeekLeftLockOnTarget;
+            @SeekLeftLockOnTarget.canceled += instance.OnSeekLeftLockOnTarget;
+            @SeekRightLockOnTarget.started += instance.OnSeekRightLockOnTarget;
+            @SeekRightLockOnTarget.performed += instance.OnSeekRightLockOnTarget;
+            @SeekRightLockOnTarget.canceled += instance.OnSeekRightLockOnTarget;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -542,9 +727,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @HeavyAttack.started -= instance.OnHeavyAttack;
+            @HeavyAttack.performed -= instance.OnHeavyAttack;
+            @HeavyAttack.canceled -= instance.OnHeavyAttack;
+            @ChargeHeavyAttack.started -= instance.OnChargeHeavyAttack;
+            @ChargeHeavyAttack.performed -= instance.OnChargeHeavyAttack;
+            @ChargeHeavyAttack.canceled -= instance.OnChargeHeavyAttack;
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @LockOn.started -= instance.OnLockOn;
+            @LockOn.performed -= instance.OnLockOn;
+            @LockOn.canceled -= instance.OnLockOn;
+            @SeekLeftLockOnTarget.started -= instance.OnSeekLeftLockOnTarget;
+            @SeekLeftLockOnTarget.performed -= instance.OnSeekLeftLockOnTarget;
+            @SeekLeftLockOnTarget.canceled -= instance.OnSeekLeftLockOnTarget;
+            @SeekRightLockOnTarget.started -= instance.OnSeekRightLockOnTarget;
+            @SeekRightLockOnTarget.performed -= instance.OnSeekRightLockOnTarget;
+            @SeekRightLockOnTarget.canceled -= instance.OnSeekRightLockOnTarget;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -621,7 +821,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDodge(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
+        void OnChargeHeavyAttack(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
+        void OnSeekLeftLockOnTarget(InputAction.CallbackContext context);
+        void OnSeekRightLockOnTarget(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
