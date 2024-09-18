@@ -34,12 +34,11 @@ namespace SL
         [SerializeField] private bool isSprintInputActive = false;
         [SerializeField] private bool isJumpInputActive = false;
         [SerializeField] private bool isAttacking = false;
-
-        [Header("Trigger Inputs")]
         [SerializeField] private bool isTriggerHeavyAttackInput = false;
-
-        [Header("Bumper Inputs")]
         [SerializeField] private bool isHoldingHeavyAttackInput = false;
+        [SerializeField] private bool isSwitchingRightHandWeaponInput = false;
+        [SerializeField] private bool isSwitchingLeftHandWeaponInput = false;
+
 
 
 
@@ -104,6 +103,10 @@ namespace SL
                 playerControls.PlayerActions.HeavyAttack.performed += ctx => isTriggerHeavyAttackInput = true;
                 playerControls.PlayerActions.ChargeHeavyAttack.performed += ctx => isHoldingHeavyAttackInput = true;
                 playerControls.PlayerActions.ChargeHeavyAttack.canceled += ctx => isHoldingHeavyAttackInput = false;
+
+                // HERE WE HANDLE SWITCHING WEAPONS
+                playerControls.PlayerActions.SwitchRightWeapon.performed += ctx => isSwitchingRightHandWeaponInput = true;
+                playerControls.PlayerActions.SwitchLeftWeapon.performed += ctx => isSwitchingLeftHandWeaponInput = true;
             }
 
             playerControls.Enable();
@@ -163,6 +166,8 @@ namespace SL
             HandleAttack();
             HandleHeavyAttacks();
             HandleChargeHeavyAttack();
+            HandleSwitchRightWeapon();
+            HandleSwitchLeftWeapon();
         }
 
         private void HandlePlayerMovementInput()
@@ -350,6 +355,24 @@ namespace SL
                 {
                     playerManager.GetPlayerNetworkManager().isChargingHeavyAttack.Value = isHoldingHeavyAttackInput;
                 }
+            }
+        }
+
+        private void HandleSwitchRightWeapon()
+        {
+            if (isSwitchingRightHandWeaponInput)
+            {
+                isSwitchingRightHandWeaponInput = false;
+                playerManager.GetPlayerEquipmentManager().SwitchRightWeapon();
+            }
+        }
+
+        private void HandleSwitchLeftWeapon()
+        {
+            if (isSwitchingLeftHandWeaponInput)
+            {
+                isSwitchingLeftHandWeaponInput = false;
+                playerManager.GetPlayerEquipmentManager().SwitchLeftWeapon();
             }
         }
 

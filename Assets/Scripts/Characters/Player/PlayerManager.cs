@@ -7,10 +7,6 @@ namespace SL
 {
     public class PlayerManager : CharacterManager
     {
-        [Header("DEBUG MENU")]
-        [SerializeField] private bool respawnCharacter = false;
-        [SerializeField] private bool switchRightWeapon = false;
-
         private PlayerLocomotionManager playerLocomotionManager;
         private PlayerAnimationManager playerAnimationManager;
         private PlayerNetworkManager playerNetworkManager;
@@ -40,8 +36,6 @@ namespace SL
 
             playerLocomotionManager.HandleAllMovement();
             playerStatsManager.RegenerateStamina();
-
-            DebugMenu();
         }
 
         protected override void LateUpdate()
@@ -226,21 +220,6 @@ namespace SL
             if (playerNetworkManager.isLockedOn.Value)
             {
                 playerNetworkManager.OnLockOnTargetIDChanged(0, playerNetworkManager.currentTargetNetworkObjectID.Value);
-            }
-        }
-
-        private void DebugMenu()
-        {
-            if (respawnCharacter)
-            {
-                respawnCharacter = false;
-                RespawnCharacter();
-            }
-
-            if (switchRightWeapon)
-            {
-                switchRightWeapon = false;
-                playerEquipmentManager.SwitchRightWeapon();
             }
         }
 
